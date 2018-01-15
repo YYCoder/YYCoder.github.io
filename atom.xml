@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Markey&#39;s home</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://blog.markeyme.cn/"/>
+  <updated>2018-01-15T16:04:04.133Z</updated>
+  <id>http://blog.markeyme.cn/</id>
+  
+  <author>
+    <name>Markey</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>git</title>
+    <link href="http://blog.markeyme.cn/2018/01/15/git/"/>
+    <id>http://blog.markeyme.cn/2018/01/15/git/</id>
+    <published>2018-01-15T15:24:07.000Z</published>
+    <updated>2018-01-15T16:04:04.133Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="GIT学习笔记"><a href="#GIT学习笔记" class="headerlink" title="GIT学习笔记"></a>GIT学习笔记</h1><p>仅为本人在工作过程中学习git的一些经验总结，还是git菜鸟一只，有更好的见解欢迎留言 ~</p><hr><h2 id="经验总结"><a href="#经验总结" class="headerlink" title="经验总结"></a>经验总结</h2><ol><li>在解冲突时一定要注意，对自己不熟悉的代码要问问是谁写的在解. 如果出现问题，用 git merge –abort 可以将冲突文件退回到merge之前的状态</li><li>在新建一个开发分支时，一定要基于master分支建，不要让其他分支上的代码掺入你的开发分支</li><li>若想更新本地仓库中的分支或tag，用 <strong>git fetch [远程仓库]</strong> 则将远程仓库的所有更新取回本地，<strong>git fetch [远程仓库] &lt;分支名&gt;</strong> 还可以在后面制定分支名，表示只取得该分支的更新，<strong>git fetch –t</strong> 表示取得所有更新及tag</li></ol><hr><h2 id="配置相关"><a href="#配置相关" class="headerlink" title="配置相关"></a>配置相关</h2><ol><li><strong>git config –list</strong> 查看当前的配置项；</li><li><strong>git config –unset [配置键].[配置名]</strong> 删除某项配置；</li><li><strong>git config –global alias.br branch</strong> 设置br为branch命令快捷命令(全局)；</li></ol><hr><h2 id="分支相关"><a href="#分支相关" class="headerlink" title="分支相关"></a>分支相关</h2><ol><li>要删除远端分支，可以 <strong>git push origin :feature-index-1207</strong>，在分支前加个冒号表示为空分支，推送一个空分支到远端就删除了这个分支；</li><li>git是支持将本地分支push到远程的另一个分支的<br><strong>git push origin develop:master -f</strong><br>将本地的develop push到远端的master分支，<strong>-f为强制标记</strong></li><li><strong>git branch –m 旧分支名 新分支名</strong> 重命名某个分支</li><li>若push之前没有pull远端代码，并且远端有修改的话，是不能push上去的，会提示你先pull再push.</li><li><p><strong>git branch –set-upstream-to origin/[branch]</strong> 设置本地分支跟踪远端分支，<strong>当这样设置后，pull以及push都无需指定origin [branch]了</strong>。</p><blockquote><p><strong>注</strong>：push本地新建的分支到远端，可以用<strong>git push –u origin [branch]</strong>，这样就自动跟踪了远端的这个分支 </p></blockquote></li><li><p><strong>git branch –unset-upstream</strong> 清除当前分支的追踪分支</p></li><li><strong>git branch –track [branch] [remote-branch]</strong> 新建一个本地分支，并与远端分支建立追踪关系</li><li>新建的开发分支不用时刻保持跟master最新的关系，合并到master的时候只是把你的修改合并，并不会将你的分支的其他代码也合并，就是说master中代码还是最新的，并且添加上了你的分支的修改，若有冲突则会合并失败，需要解冲突。</li><li>使用<strong>git rebase [分支名]</strong>“干净地”合并。与merge一样，主要都是为了保持开发分支与master同步。只不过merge会保留很多无用的commit，并且commit的顺序是根据时间排序的，而rebase默认则是将开发分支的commit排在最后（尽管可能commit时间比master某些commit早）。<ul><li>当rebase过程中有冲突时可以用<strong>git rebase –abort</strong>、<strong>git rebase –continue</strong>等命令控制rebase流程</li><li>使用<strong>git rebase -i [分支名]</strong>可以做很多commit相关操作，如可以修改commit message、将多个commit合并为一个等</li></ul></li><li>当本地有修改未添加到暂存区或提交时，会无法checkout到已有分支，而用<strong>git checkout -b [新分支名]</strong>命令切换到新分支则没问题，并会把修改带到新分支<ul><li>该问题也可以使用<strong>git stash</strong>命令解决，该命令将工作区的修改保存，通过<strong>git stash list</strong>可以查看当前保存的所有操作</li><li><strong>git stash pop [stash序号]</strong>恢复保存的工作区修改到当前分支</li><li><strong>git stash clear</strong>清空所有stash</li></ul></li><li><strong>git merge –squash [分支名]</strong>将本地另一个分支所有提交合并为一个，并添加到当前分支的暂存区</li></ol><hr><h2 id="对比及回退"><a href="#对比及回退" class="headerlink" title="对比及回退"></a>对比及回退</h2><ol><li><p>git比对本次跟上次提交的区别: <strong>git diff HEAD HEAD^ –stat</strong>(显示的不详细)；</p><blockquote><p><strong>注</strong>：git diff 此命令比较的是工作目录中当前文件和暂存区域快照之间的差异，也就是修改之后还没有暂存起来的变化内容。(若没有提交暂存区，则会比对上次提交的快照)<br></p><p><strong>注</strong>：若要看已经暂存起来的文件和上次提交时的快照之间的差异，可以用 <strong>git diff –cached</strong> 命令。</p></blockquote></li><li><p><strong>git reset –hard [commit_id]</strong> 回退到某次的commit状态，并将<strong>本地源码也恢复到那次commit的状态</strong><br><br><strong>git reset –soft [commit_id]</strong> 回退到某次的commit状态，但<strong>本地源码保持不变，并保存到暂存区</strong>，如需提交，重新提交即可<br><br><strong>git reset [commit-id]（git reset –mixed [commit-id]）</strong> 回退到某次的commit状态，但本地源码保持不变，如需提交，重新提交即可<br><br><strong>git reset HEAD <file></file></strong> 撤销已暂存的文件<br><br><strong>git reset HEAD~[n]</strong> 撤销到倒数第n次提交<br><br><strong>git checkout <file></file></strong> 摒弃对文件的修改(若无暂存状态，则会退到上次commit；  若有，则回退到上次暂存状态)<br><br><strong>git reset [commit-id | 分支名] <file-name></file-name></strong> 也可以将单个文件恢复到指定提交，但无法使用以上模式，<strong>当前分支修改保持不变，reset到的目标分支加入到暂存区</strong></p><blockquote><p><strong>注</strong>：git reset 到某次commit都会删除git log中那次的commit信息，即回退后就无法再回到之前的commit了<br></p><p><strong>注</strong>：git reset 也可以reset到<em>另一个分支</em>的最后一次提交状态，如: <strong>git reset –hard develop</strong>，同时也可以reset到远端分支的最后一次提交，如<strong>git reset –hard origin/[远端分支名]</strong><br></p></blockquote></li><li><p><strong>git revert HEAD</strong> 回退到最近一次提交的<strong>前一次提交</strong><br><br><strong>git revert HEAD~[n]</strong> 回退到倒数第n次提交的<strong>前一次提交</strong><br><br><strong>git revert [commit_id]</strong> 回退到指定提交的<strong>前一次提交</strong><br></p><blockquote><p><strong>注</strong>：revert相比reset更安全，因为它是生成一次新的提交记录，保留原有的提交记录。</p><p><strong>注</strong>：经测试，这里所说的<strong>前一次提交</strong>是指代码是前一次提交的状态，但显示revert到的commit_id还是指定的commit_id。这一点要跟reset区分开。</p></blockquote></li><li><strong>git commit –amend</strong> 将暂存区中的更改更新到最近一次提交（不会产生新的提交记录）<blockquote><p><strong>注</strong>：若提交时忘了提交某些修改可以用该方法补救</p></blockquote></li><li><strong>git log -p [file]</strong> 查看指定文件每次提交的diff</li><li><strong>git log -g</strong> 按照操作顺序查看所有操作，包括checkout、commit、merge、reset等等。当分支被误删，想要恢复那个分支的代码时，该指令很有效。使用 <strong>git branch [分知名] [commit_id]</strong> 即可恢复分支。<blockquote><p><strong>注</strong>：添加到暂存区是不会有记录的</p></blockquote></li><li><strong>git cherry-pick [commit_id]</strong>可以将其他分支上的提交，在当前分支再提交一次，生成的新commit_id不同</li></ol><hr><h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p><strong>原理</strong>：<br><br>你必须为自己创建一对<em>密匙</em>，并把<em>公钥</em>放在需要访问的服务器上。如果你要连接到SSH服务器上，客户端软件就会向服务器发出请求，<strong>请求用你的<em>公钥</em>进行安全验证</strong>。服务器收到请求之后，先在你在该服务器的目录下寻找你的<em>公钥</em>，然后把它和你发送过来的公钥进行比较。如果两个一致，服务器就用<strong>公钥加密“质询”（challenge）</strong>并把它发送给客户端软件。客户端软件收到“质询”之后就可以用你的<em>密钥解密</em>再把它发送给服务器。</p><p><strong>SSH key(密钥对)</strong>：<br><br>是git对用户进行身份验证的重要根据，若该用户的电脑上没有ssh key，或者有但是没有添加至ssh agent或你的git account，是无法连接到github进行远端操作的(可通过<strong>ssh -T git@github.com</strong> 命令才验证)<br><br>因此，需要创建ssh key并添加至你的git account。<br>步骤如下：</p><ol><li><strong>本地创建ssh key</strong><br><br>在git bash中输入 <strong>ssh-keygen -t rsa -C “your email address”</strong>命令，然后回车，再输入两次密码即可(该密码在你设置ssh key 到git account时会用到)</li><li><strong>添加到你的ssh agent上</strong><br><br>先检测ssh-agent是否运行 <strong>$ eval $(ssh-agent -s)</strong><br>添加SSH key到ssh-agent <strong>$ ssh-add 你的密钥文件路径(一般是id_rsa)</strong></li><li><p>登录到你的git账户，在settings目录下找到SSH key设置，将你的公钥复制到key选项中，title随意，完事 ~<br></p><blockquote><p><strong>注</strong>：可以通过<strong>ssh-add -l</strong>命令判断当前正在使用的ssh-key，如果有在使用的key，则会输出该key的fingerprint。并且默认的~/.ssh/id_rsa、 ~/.ssh/id_dsa以及 ~/.ssh/identity是自动加入SSH authentication agent的，因此无需再手动ssh-add，如果你使用的是其他名字的key，则要手动加入！</p></blockquote></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;GIT学习笔记&quot;&gt;&lt;a href=&quot;#GIT学习笔记&quot; class=&quot;headerlink&quot; title=&quot;GIT学习笔记&quot;&gt;&lt;/a&gt;GIT学习笔记&lt;/h1&gt;&lt;p&gt;仅为本人在工作过程中学习git的一些经验总结，还是git菜鸟一只，有更好的见解欢迎留言 ~&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.markeyme.cn/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="git" scheme="http://blog.markeyme.cn/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://blog.markeyme.cn/2018/01/15/hello-world/"/>
+    <id>http://blog.markeyme.cn/2018/01/15/hello-world/</id>
+    <published>2018-01-15T08:57:36.061Z</published>
+    <updated>2018-01-15T08:57:36.061Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
