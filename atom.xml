@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.markeyme.cn/"/>
-  <updated>2018-01-15T16:04:04.133Z</updated>
+  <updated>2018-01-17T14:05:25.015Z</updated>
   <id>http://blog.markeyme.cn/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>markey</title>
+    <link href="http://blog.markeyme.cn/2018/01/16/markey/"/>
+    <id>http://blog.markeyme.cn/2018/01/16/markey/</id>
+    <published>2018-01-16T13:13:16.000Z</published>
+    <updated>2018-01-17T14:05:25.015Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="小站终于搭好啦"><a href="#小站终于搭好啦" class="headerlink" title="小站终于搭好啦"></a>小站终于搭好啦</h1><p>为了纪念这意义重大的时刻，一定要写篇文章庆祝下，主题不是别的，就是我。</p><h2 id="歪某某—-一个努力的前端程序猿兼鼓手"><a href="#歪某某—-一个努力的前端程序猿兼鼓手" class="headerlink" title="歪某某— 一个努力的前端程序猿兼鼓手"></a>歪某某— 一个努力的前端程序猿兼鼓手</h2><p>称谓：</p><ul><li>大头（因为姓氏的缘故，这个昵称是被用的最久的，贯穿我的整个童年、少年时代…）</li><li>歪**（高中时开始用，主要在网上用，没什么含义，好玩而已）</li><li>markey（码名：即作为开发者的昵称）</li></ul><p>2017年6月25日毕业于东北林业大学，信息管理与信息系统专业（一半计算机一半管理）。大学期间没参与任何校组织（因为觉得官僚），倒是把一大半精力放在了社团上，一个是异族摇滚社，一个是606软件工作室。可以说这两个社团的经历决定了我现在的路。</p><p>学生时代喜欢安静，不太参与社交，造成了现在表达能力欠佳。很多时候想法有了，不知如何表达，非常无奈啊。工作后这个问题更加凸显出来，最近正在慢慢改进。</p><p>从小到大就一直有股倔劲，对于自己喜欢的事，非常执着、我行我素。学生时代可以总结为这几件事：</p><ul><li>小学：魔兽3、cs</li><li>初中：篮球</li><li>高中：学习</li><li>大学：音乐、前端</li></ul><p>小学时是个网瘾少年，立志成为sky那样的电竞选手，天天打魔兽、cs。自以为在朋友圈中水平尚佳，但也因此成绩渣的一逼，升学考试没能进入重点班。</p><p>初中渐渐放弃电竞，又开始沉迷篮球，模板为NBA伟大射手Ray.Allen。初二还参加过训练营，见识到世界之大后备受打击，遂专心学习。</p><p>高中时代由于篮球打得还行，学习成绩也不错，先后被几个妹子暧昧，但没一个有结果。那时候脑子里就只有学习…情商啊…</p><p>附一张高中时代仅有的图，被邻桌偷拍的：<br><img src="/assets/high_school.jpeg" alt="高中"></p><p>大学时的经历着实决定了我现在的方向。加入了异族摇滚社让我体会到了责任与担当，也给予了我终生的爱好；加入软件工作室让我接触了前端，进入了互联网行业，也学会了一门养活自己的本事。</p><p>因为喜欢日本视觉系摇滚，大学演出特意让左边这个漂亮的妹子给画了个非常视觉系的浓妆…后来还画过几次，但都没这次成功。<br><img src="/assets/college_1.jpeg" alt="浓妆"></p><p>如今，已工作半年，每天沉迷工作无法自拔，只想努力成长，早日成为大牛。之后有时间了，还计划继续玩个乐队，没事儿录个视频、排排练，也是极好的。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;小站终于搭好啦&quot;&gt;&lt;a href=&quot;#小站终于搭好啦&quot; class=&quot;headerlink&quot; title=&quot;小站终于搭好啦&quot;&gt;&lt;/a&gt;小站终于搭好啦&lt;/h1&gt;&lt;p&gt;为了纪念这意义重大的时刻，一定要写篇文章庆祝下，主题不是别的，就是我。&lt;/p&gt;
+&lt;h2 id=&quot;歪某
+      
+    
+    </summary>
+    
+    
+      <category term="life" scheme="http://blog.markeyme.cn/tags/life/"/>
+    
+  </entry>
   
   <entry>
     <title>git</title>
@@ -39,27 +63,6 @@
     
     
       <category term="git" scheme="http://blog.markeyme.cn/tags/git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="http://blog.markeyme.cn/2018/01/15/hello-world/"/>
-    <id>http://blog.markeyme.cn/2018/01/15/hello-world/</id>
-    <published>2018-01-15T08:57:36.061Z</published>
-    <updated>2018-01-15T08:57:36.061Z</updated>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
-      
-    
-    </summary>
-    
     
   </entry>
   
