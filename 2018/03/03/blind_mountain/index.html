@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        git · Markey&#39;s home
+        blind_mountain · Markey&#39;s home
         
     </title>
     <link rel="icon" href= /assets/favicon.ico>
@@ -72,7 +72,7 @@
                 <a href="/" >Markey&#39;s home</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">git</a>
+                <a href="#" class="post-name">blind_mountain</a>
             </div>
     </div>
     
@@ -93,7 +93,7 @@
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            git
+            blind_mountain
             <!-- 404 -->
             
         </h1>
@@ -111,14 +111,14 @@
             
                 <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-href = git>git</a>
+        <a class="post-tag" href="javascript:void(0);" data-href = movies>movies</a>
     
 </div>
             
             <script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "1", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = "/static/api/js/share.js"];</script>
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2018/01/15</span>
+                <span class="post-intro-time">2018/03/03</span>
                 <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe604;</span>
                     <span id="busuanzi_value_page_pv"></span>
@@ -201,102 +201,27 @@
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h1 id="GIT学习笔记"><a href="#GIT学习笔记" class="headerlink" title="GIT学习笔记"></a>GIT学习笔记</h1><p>仅为本人在工作过程中学习git的一些经验总结，还是git菜鸟一只，有更好的见解欢迎留言 ~</p>
-<hr>
-<h2 id="经验总结"><a href="#经验总结" class="headerlink" title="经验总结"></a>经验总结</h2><ol>
-<li>在解冲突时一定要注意，对自己不熟悉的代码要问问是谁写的在解. 如果出现问题，用 git merge –abort 可以将冲突文件退回到merge之前的状态</li>
-<li>在新建一个开发分支时，一定要基于master分支建，不要让其他分支上的代码掺入你的开发分支</li>
-<li>若想更新本地仓库中的分支或tag，用 <strong>git fetch [远程仓库]</strong> 则将远程仓库的所有更新取回本地，<strong>git fetch [远程仓库] &lt;分支名&gt;</strong> 还可以在后面制定分支名，表示只取得该分支的更新，<strong>git fetch –t</strong> 表示取得所有更新及tag</li>
-</ol>
-<hr>
-<h2 id="配置相关"><a href="#配置相关" class="headerlink" title="配置相关"></a>配置相关</h2><ol>
-<li><strong>git config –list</strong> 查看当前的配置项；</li>
-<li><strong>git config –unset [配置键].[配置名]</strong> 删除某项配置；</li>
-<li><strong>git config –global alias.br branch</strong> 设置br为branch命令快捷命令(全局)；</li>
-</ol>
-<hr>
-<h2 id="分支相关"><a href="#分支相关" class="headerlink" title="分支相关"></a>分支相关</h2><ol>
-<li>要删除远端分支，可以 <strong>git push origin :feature-index-1207</strong>，在分支前加个冒号表示为空分支，推送一个空分支到远端就删除了这个分支；</li>
-<li>git是支持将本地分支push到远程的另一个分支的<br><strong>git push origin develop:master -f</strong><br>将本地的develop push到远端的master分支，<strong>-f为强制标记</strong></li>
-<li><strong>git branch –m 旧分支名 新分支名</strong> 重命名某个分支</li>
-<li>若push之前没有pull远端代码，并且远端有修改的话，是不能push上去的，会提示你先pull再push.</li>
-<li><p><strong>git branch –set-upstream-to origin/[branch]</strong> 设置本地分支跟踪远端分支，<strong>当这样设置后，pull以及push都无需指定origin [branch]了</strong>。</p>
-<blockquote>
-<p><strong>注</strong>：push本地新建的分支到远端，可以用<strong>git push –u origin [branch]</strong>，这样就自动跟踪了远端的这个分支 </p>
+        <h1 id="观《盲山》有感"><a href="#观《盲山》有感" class="headerlink" title="观《盲山》有感"></a>观《盲山》有感</h1><blockquote>
+<p>不是影评，只是观后感</p>
 </blockquote>
-</li>
-<li><p><strong>git branch –unset-upstream</strong> 清除当前分支的追踪分支</p>
-</li>
-<li><strong>git branch –track [branch] [remote-branch]</strong> 新建一个本地分支，并与远端分支建立追踪关系</li>
-<li>新建的开发分支不用时刻保持跟master最新的关系，合并到master的时候只是把你的修改合并，并不会将你的分支的其他代码也合并，就是说master中代码还是最新的，并且添加上了你的分支的修改，若有冲突则会合并失败，需要解冲突。</li>
-<li>使用<strong>git rebase [分支名]</strong>“干净地”合并。与merge一样，主要都是为了保持开发分支与master同步。只不过merge会保留很多无用的commit，并且commit的顺序是根据时间排序的，而rebase默认则是将开发分支的commit排在最后（尽管可能commit时间比master某些commit早）。<ul>
-<li>当rebase过程中有冲突时可以用<strong>git rebase –abort</strong>、<strong>git rebase –continue</strong>等命令控制rebase流程</li>
-<li>使用<strong>git rebase -i [分支名]</strong>可以做很多commit相关操作，如可以修改commit message、将多个commit合并为一个等</li>
-</ul>
-</li>
-<li>当本地有修改未添加到暂存区或提交时，会无法checkout到已有分支，而用<strong>git checkout -b [新分支名]</strong>命令切换到新分支则没问题，并会把修改带到新分支<ul>
-<li>该问题也可以使用<strong>git stash</strong>命令解决，该命令将工作区的修改保存，通过<strong>git stash list</strong>可以查看当前保存的所有操作</li>
-<li><strong>git stash pop [stash序号]</strong>恢复保存的工作区修改到当前分支</li>
-<li><strong>git stash clear</strong>清空所有stash</li>
-</ul>
-</li>
-<li><strong>git merge –squash [分支名]</strong>将本地另一个分支所有提交合并为一个，并添加到当前分支的暂存区</li>
-</ol>
-<hr>
-<h2 id="对比及回退"><a href="#对比及回退" class="headerlink" title="对比及回退"></a>对比及回退</h2><ol>
-<li><p>git比对本次跟上次提交的区别: <strong>git diff HEAD HEAD^ –stat</strong>(显示的不详细)；</p>
-<blockquote>
-<p><strong>注</strong>：git diff 此命令比较的是工作目录中当前文件和暂存区域快照之间的差异，也就是修改之后还没有暂存起来的变化内容。(若没有提交暂存区，则会比对上次提交的快照)<br></p>
-<p><strong>注</strong>：若要看已经暂存起来的文件和上次提交时的快照之间的差异，可以用 <strong>git diff –cached</strong> 命令。</p>
-</blockquote>
-</li>
-<li><p><strong>git reset –hard [commit_id]</strong> 回退到某次的commit状态，并将<strong>本地源码也恢复到那次commit的状态</strong><br><br><strong>git reset –soft [commit_id]</strong> 回退到某次的commit状态，但<strong>本地源码保持不变，并保存到暂存区</strong>，如需提交，重新提交即可<br><br><strong>git reset [commit-id]（git reset –mixed [commit-id]）</strong> 回退到某次的commit状态，但本地源码保持不变，如需提交，重新提交即可<br><br><strong>git reset HEAD <file></file></strong> 撤销已暂存的文件<br><br><strong>git reset HEAD~[n]</strong> 撤销到倒数第n次提交<br><br><strong>git checkout <file></file></strong> 摒弃对文件的修改(若无暂存状态，则会退到上次commit；  若有，则回退到上次暂存状态)<br><br><strong>git reset [commit-id | 分支名] <file-name></file-name></strong> 也可以将单个文件恢复到指定提交，但无法使用以上模式，<strong>当前分支修改保持不变，reset到的目标分支加入到暂存区</strong></p>
-<blockquote>
-<p><strong>注</strong>：git reset 到某次commit都会删除git log中那次的commit信息，即回退后就无法再回到之前的commit了<br></p>
-<p><strong>注</strong>：git reset 也可以reset到<em>另一个分支</em>的最后一次提交状态，如: <strong>git reset –hard develop</strong>，同时也可以reset到远端分支的最后一次提交，如<strong>git reset –hard origin/[远端分支名]</strong><br></p>
-</blockquote>
-</li>
-<li><p><strong>git revert HEAD</strong> 回退到最近一次提交的<strong>前一次提交</strong><br><br><strong>git revert HEAD~[n]</strong> 回退到倒数第n次提交的<strong>前一次提交</strong><br><br><strong>git revert [commit_id]</strong> 回退到指定提交的<strong>前一次提交</strong><br></p>
-<blockquote>
-<p><strong>注</strong>：revert相比reset更安全，因为它是生成一次新的提交记录，保留原有的提交记录。</p>
-<p><strong>注</strong>：经测试，这里所说的<strong>前一次提交</strong>是指代码是前一次提交的状态，但显示revert到的commit_id还是指定的commit_id。这一点要跟reset区分开。</p>
-</blockquote>
-</li>
-<li><strong>git commit –amend</strong> 将暂存区中的更改更新到最近一次提交（不会产生新的提交记录）<blockquote>
-<p><strong>注</strong>：若提交时忘了提交某些修改可以用该方法补救</p>
-</blockquote>
-</li>
-<li><strong>git log -p [file]</strong> 查看指定文件每次提交的diff</li>
-<li><strong>git log -g</strong> 按照操作顺序查看所有操作，包括checkout、commit、merge、reset等等。当分支被误删，想要恢复那个分支的代码时，该指令很有效。使用 <strong>git branch [分知名] [commit_id]</strong> 即可恢复分支。<blockquote>
-<p><strong>注</strong>：添加到暂存区是不会有记录的</p>
-</blockquote>
-</li>
-<li><strong>git cherry-pick [commit_id]</strong>可以将其他分支上的提交，在当前分支再提交一次，生成的新commit_id不同</li>
-</ol>
-<hr>
-<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p><strong>原理</strong>：<br><br>你必须为自己创建一对<em>密匙</em>，并把<em>公钥</em>放在需要访问的服务器上。如果你要连接到SSH服务器上，客户端软件就会向服务器发出请求，<strong>请求用你的<em>公钥</em>进行安全验证</strong>。服务器收到请求之后，先在你在该服务器的目录下寻找你的<em>公钥</em>，然后把它和你发送过来的公钥进行比较。如果两个一致，服务器就用<strong>公钥加密“质询”（challenge）</strong>并把它发送给客户端软件。客户端软件收到“质询”之后就可以用你的<em>密钥解密</em>再把它发送给服务器。</p>
-<p><strong>SSH key(密钥对)</strong>：<br><br>是git对用户进行身份验证的重要根据，若该用户的电脑上没有ssh key，或者有但是没有添加至ssh agent或你的git account，是无法连接到github进行远端操作的(可通过<strong>ssh -T git@github.com</strong> 命令才验证)<br><br>因此，需要创建ssh key并添加至你的git account。<br>步骤如下：</p>
-<ol>
-<li><strong>本地创建ssh key</strong><br><br>在git bash中输入 <strong>ssh-keygen -t rsa -C “your email address”</strong>命令，然后回车，再输入两次密码即可(该密码在你设置ssh key 到git account时会用到)</li>
-<li><strong>添加到你的ssh agent上</strong><br><br>先检测ssh-agent是否运行 <strong>$ eval $(ssh-agent -s)</strong><br>添加SSH key到ssh-agent <strong>$ ssh-add 你的密钥文件路径(一般是id_rsa)</strong></li>
-<li><p>登录到你的git账户，在settings目录下找到SSH key设置，将你的公钥复制到key选项中，title随意，完事 ~<br></p>
-<blockquote>
-<p><strong>注</strong>：可以通过<strong>ssh-add -l</strong>命令判断当前正在使用的ssh-key，如果有在使用的key，则会输出该key的fingerprint。并且默认的~/.ssh/id_rsa、 ~/.ssh/id_dsa以及 ~/.ssh/identity是自动加入SSH authentication agent的，因此无需再手动ssh-add，如果你使用的是其他名字的key，则要手动加入！</p>
-</blockquote>
-</li>
-</ol>
+<p>今天看了《盲山》后，心情无比压抑。虽然这部电影的故事已经耳熟能详，无论电视上还是网络中已经有过各种拐卖妇女的报道，所以从一开始就基本能想到剧情的发展方向，但是过程中依旧被种种场景震撼，比如雪梅逃出屋子后被全村的男人联合抓回，村里其他被拐卖妇女劝说雪梅她们是如何屈服的，警察来到村里营救却被村民围堵威胁导致营救失败等等。电视上对这类报道听得多了，就会有些麻木，但看了这部电影不得不赞叹导演对各种细节的精妙表述，能够切身体会到被拐妇女的绝望，不得不给给李杨导演点个赞。<br></p>
+<h2 id="先说说让我印象最深刻的几个男人"><a href="#先说说让我印象最深刻的几个男人" class="headerlink" title="先说说让我印象最深刻的几个男人"></a>先说说让我印象最深刻的几个男人</h2><h3 id="黄德贵"><a href="#黄德贵" class="headerlink" title="黄德贵"></a>黄德贵</h3><p>无论酒桌上的这句“谁不喝完这酒，谁就一辈子打光棍，儿子孙子也打光棍，下辈子还是打光棍！”，还是被雪梅劝说时的强词夺理“坐个球的牢，哪家娶媳妇不花钱”，都能看出这个人的“盲”。在他眼里，女人就是自己的工具、仆人，结婚也不过是花一笔钱就了了的事。他不知道什么叫拐卖妇女，因为村里人都这么干；他也不知道结婚是有法律效益的，是两情相悦的，因为他“经验丰富”的父亲就是认为“女人就要收拾”。生长环境的“盲”导致了他的“盲”，并且会继续传递下去，恶性循环。也许帮雪梅寄信的刘青山长大后也娶了买来的媳妇。</p>
+<h3 id="黄父"><a href="#黄父" class="headerlink" title="黄父"></a>黄父</h3><p>刚开始感觉这个老人看起来还是挺老实憨厚的，直到他为了帮他无能的儿子“办事”，跟黄母一块控制雪梅好让黄德贵强奸她后，彻底颠覆了对他印象。而且在德贵办完事后还赞许地给他递支烟，仿佛认可德贵的能力一样，再次冲击了我的认知。</p>
+<h3 id="黄德诚"><a href="#黄德诚" class="headerlink" title="黄德诚"></a>黄德诚</h3><p>刚开始觉得这个人可能是雪梅的最后救星，他是全村看起来唯一有点良知的。看到后面才发现，无论是以救雪梅逃出去为名义而摸她的手，还是最后直接搞了雪梅的身子，这个人的那点学问全都用在了虚伪上。<br><br>最后事情败露，不仅让雪梅再次挨了打，之后为了逃避责任抛弃了雪梅，一个人离开了村子。雪梅为了逃出去最大的希望破灭。他所说的“道德的德，诚信的诚”真是对他一个天大的讽刺。<br><br>可能有人觉得雪梅是真心喜欢他，或者只是为了逃出去而利用他，无论怎样，最终受伤的依旧是雪梅。德诚走后，雪梅没有哭没有闹，只是静静地烧掉了他送的书，然后来到小卖铺跟老板做了“交易”。在经历了那么多事以后，她已经开始麻木，习惯了受伤，但唯一让我庆幸的是，她始终没有放弃抵抗。相比村里其他被拐卖来的女人，雪梅无疑是坚强的。<br><br>后来看了影评后惊了，才发现那个扮演同样被拐卖来的女人的演员就是真实被拐卖来，生活在那个村子里的，并且才20岁就已经是两个孩子的妈。</p>
+<h2 id="其他人"><a href="#其他人" class="headerlink" title="其他人"></a>其他人</h2><p>无论是帮德贵将雪梅抓回去的男人们、眼睁睁看着雪梅的求救而不予帮助的村委会主任，还是看似礼貌实则被买通的邮递员、猥琐的小卖部老板等等，整部电影把村民的无知、冷漠、法盲血淋淋地展现到底。<br><br>最可怕的是当警察来救雪梅时，全村人集体出动阻挠，甚至以动武威胁。德贵无视警察的手枪，“犯啥法？你打，朝这打”，黄母也耍起无赖，“你们要把人带走，从我身上压过去算了”。看到这里突然觉得似曾相识。即使身处城市的我们，隔三差五依旧能看到类似的人、事。<br><br>不得不说，李杨是勇敢的，将社会最真实的一面毫无粉饰地展示出来。即使是现在，中国拐卖妇女的现象依旧存在，而且屡见不鲜。就同电影一样，村中的人们不认为这是犯法，而是天经地义，甚至就在电影拍摄时就有当地村民恬不知耻地问李杨：“那个女娃娃（女主角）长得不错，干脆就卖给我吧。”他们被山遮蔽了双眼，不以无知为耻，麻木不仁，上下同谋。<br><br>起初我心里是无比的愤怒，但是看到黄母为了不让雪梅堕胎而给雪梅下跪我又有了反思。村民们想要的无非是传宗接代，尽管他们的道德观不符合现代的标准，但他们的目的也不过如此。所谓“穷山恶水出刁民”，我认为村民的暴力，也是由于极度的不安全感。因为长期的与世隔绝，他们知道自己是跟不上时代的，是社会的最弱者，所以只能通过暴力、无赖来声明自己的权益。其实仔细想一想，他们不是不知道拐卖妇女是犯法，而是选择麻木，上下一气，因为他们都是一条绳上的蚂蚱。他们是既可恨又可悲的。<br><br>所以整部电影的罪人，我认为非人贩子莫属。</p>
+<h2 id="再说雪梅"><a href="#再说雪梅" class="headerlink" title="再说雪梅"></a>再说雪梅</h2><p>其实电影中雪梅的设定是大学生就让我有些怀疑，因为即使是90年代，大学生也不至于会轻易相信一个人贩子的话到山里吧，要知道90年代的大学生是多么稀有，能力多强不说，至少在最基础的判断能力上也不会那么愚蠢。<br><br>不过可能电影就是这样，不能以过分理性的眼光去评判，只要体会到导演想传达的感情和思想就可以了。从这个角度看，雪梅无疑是悲惨的，尤其是海外版结局，最终一刀砍向德贵。她的命运依旧没有被改变。不过这也更加贴近现实。毕竟被强制封闭在这山里那么久，忍受身体、精神上的虐待，经历种种绝望，她心里一定早有怒火，只是无法宣泄。从电影中雪梅给德贵拿毛巾那处就可以看出，她其实早有杀掉德贵的念头。即使是大学生，处在那样充满暴力的环境中久了，也会被同化，因为那里只有暴力才能解决问题。<br><br>对这个角色，我不想多说，只是替她惋惜。有哪个女生不希望自己能够享受更好的物质生活，能够嫁给自己心爱的人，如果她没有轻信人贩子，她的生活会是无限美好的，前途也是不可限量的。正是这种巨大的反差突出了这种矛盾。随着剧情的发展，看着雪梅一步步从清纯的少女，到年仅20多岁就看起来像大婶，心里无比叹息。<br><br>而目前在中国，依然有很多这样活生生的例子，它们也许就发生在我们老家，也许就是哪个婶婶、奶奶，就如上文说的村中其他被拐卖进来的女人一样，她们不像雪梅，大多数只能选择妥协，甚至有些还觉得在那里挺好。<br><br>有趣的是，影片最后打了一行字幕：“中国公安机关一直严厉打击拐卖妇女的犯罪活动，解救出无数被拐卖的妇女，并将犯罪分子绳之以法。”怎么看怎么像是讽刺。</p>
 
     </article>
     <!-- 前后页  -->
     <ul class="post-pager">
         
-            <li class="next">
-                <a href= "/2018/01/16/markey/" title= markey >
-                    <span>Next Post</span>
-                    <span>markey</span>
+        
+            <li class="previous">
+                <a href= "/2018/02/08/好好写代码归档/" title= 好好写代码 >
+                    <span>Previous Post</span>
+                    <span>好好写代码</span>
                 </a>
             </li>
-        
         
     </ul>
     <!-- 评论插件 -->
@@ -311,8 +236,8 @@
     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
         
         var disqus_config = function () {
-        this.page.url = "http://blog.markeyme.cn/2018/01/15/git/";  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = "git"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = "http://blog.markeyme.cn/2018/03/03/blind_mountain/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "blind_mountain"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
         };
         
         (function () { // DON'T EDIT BELOW THIS LINE
@@ -385,7 +310,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#GIT学习笔记"><span class="toc-number">1.</span> <span class="toc-text">GIT学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#经验总结"><span class="toc-number">1.1.</span> <span class="toc-text">经验总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置相关"><span class="toc-number">1.2.</span> <span class="toc-text">配置相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支相关"><span class="toc-number">1.3.</span> <span class="toc-text">分支相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对比及回退"><span class="toc-number">1.4.</span> <span class="toc-text">对比及回退</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH"><span class="toc-number">1.5.</span> <span class="toc-text">SSH</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#观《盲山》有感"><span class="toc-number">1.</span> <span class="toc-text">观《盲山》有感</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#先说说让我印象最深刻的几个男人"><span class="toc-number">1.1.</span> <span class="toc-text">先说说让我印象最深刻的几个男人</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#黄德贵"><span class="toc-number">1.1.1.</span> <span class="toc-text">黄德贵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#黄父"><span class="toc-number">1.1.2.</span> <span class="toc-text">黄父</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#黄德诚"><span class="toc-number">1.1.3.</span> <span class="toc-text">黄德诚</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他人"><span class="toc-number">1.2.</span> <span class="toc-text">其他人</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#再说雪梅"><span class="toc-number">1.3.</span> <span class="toc-text">再说雪梅</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
