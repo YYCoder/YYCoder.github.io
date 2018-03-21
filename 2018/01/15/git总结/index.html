@@ -9,8 +9,6 @@
         
     </title>
     <link rel="icon" href= /assets/favicon.ico>
-    <!-- TODO: 在font-face加载完毕后改变字体  -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
     <!-- 提前加载place holder  -->
     <style type="text/css">
         @font-face {
@@ -48,13 +46,9 @@
     }
 </style>
     <link rel="stylesheet" href = /css/style.css?v=20171227 />
-    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
     
     <script src="/scripts/main.js" defer></script>
-    <!-- 百度统计  -->
-    
-    <!-- 谷歌统计  -->
-    
 </head>
 
     
@@ -160,45 +154,7 @@
                     }()
                 }
 
-            function fontLoaded(){
-                console.log('font loaded');
-                if (document.getElementsByClassName('site-intro-meta')) {
-                    document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
-                    document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
-                    var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
-                        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
-                        if (postIntroTags) {
-                            postIntroTags.classList.add('post-fade-in');
-                        }
-                        if (postIntroMeat) {
-                            postIntroMeat.classList.add('post-fade-in');
-                        }
-                    }
-                }
-                
             console.log("userAgent:" + browser.versions.userAgent);
-            // UC不支持跨域，所以直接显示
-            if (browser.versions.uc) {
-                console.log("UCBrowser");
-                fontLoaded();
-            } else {
-                WebFont.load({
-                    custom: {
-                        families: ['Oswald-Regular']
-                    },
-                    loading: function () {  //所有字体开始加载
-                        // console.log('loading');
-                    },
-                    active: function () {  //所有字体已渲染
-                        fontLoaded();
-                    },
-                    inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
-                        console.log('inactive: timeout');
-                        fontLoaded();
-                    },
-                    timeout: 7000 // Set the timeout to two seconds
-                });
-            }
         </script>
         <div class="container container-unloaded">
             <main class="main post-page">
@@ -373,6 +329,10 @@
         </span>
     </div>
     
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+        
 </footer>
     </div>
     <!-- toc -->
@@ -486,15 +446,15 @@
         <div class="sidebar-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name"><a href= "#">node</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">coding</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">git</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">life</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">movies</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">git</a></span>
+        <span class="sidebar-tag-name"><a href= "#">node</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -534,7 +494,7 @@ jsonContent:
 </script>
     <!-- 不蒜子  -->
     
-    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <script async defer src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     
     <!-- CNZZ统计  -->
     
