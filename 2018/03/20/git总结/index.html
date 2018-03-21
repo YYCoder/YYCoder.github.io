@@ -112,7 +112,7 @@
             <script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "1", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = "/static/api/js/share.js"];</script>
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2018/01/15</span>
+                <span class="post-intro-time">2018/03/20</span>
                 <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe604;</span>
                     <span id="busuanzi_value_page_pv"></span>
@@ -196,21 +196,21 @@
             <main class="main post-page">
     <article class="article-entry">
         <hr>
-<p>title: git<br>date: 2018-01-15 23:24:07<br>tags: </p>
-<h2 id="git"><a href="#git" class="headerlink" title=" - git"></a> - git</h2><h1 id="GIT学习笔记"><a href="#GIT学习笔记" class="headerlink" title="GIT学习笔记"></a>GIT学习笔记</h1><p>仅为本人在工作过程中学习git的一些经验总结，还是git菜鸟一只，有更好的见解欢迎留言 ~</p>
-<hr>
+<p>title: git总结<br>date: 2018-01-15 23:24:07<br>tags:</p>
+<pre><code>- git
+- coding
+</code></pre><hr>
+<h1 id="GIT学习笔记"><a href="#GIT学习笔记" class="headerlink" title="GIT学习笔记"></a>GIT学习笔记</h1><p>仅为本人在工作过程中学习git的一些经验总结，还是git菜鸟一只，有更好的见解欢迎留言 ~</p>
 <h2 id="经验总结"><a href="#经验总结" class="headerlink" title="经验总结"></a>经验总结</h2><ol>
 <li>在解冲突时一定要注意，对自己不熟悉的代码要问问是谁写的在解. 如果出现问题，用 git merge –abort 可以将冲突文件退回到merge之前的状态</li>
 <li>在新建一个开发分支时，一定要基于master分支建，不要让其他分支上的代码掺入你的开发分支</li>
 <li>若想更新本地仓库中的分支或tag，用 <strong>git fetch [远程仓库]</strong> 则将远程仓库的所有更新取回本地，<strong>git fetch [远程仓库] &lt;分支名&gt;</strong> 还可以在后面制定分支名，表示只取得该分支的更新，<strong>git fetch –t</strong> 表示取得所有更新及tag</li>
 </ol>
-<hr>
 <h2 id="配置相关"><a href="#配置相关" class="headerlink" title="配置相关"></a>配置相关</h2><ol>
 <li><strong>git config –list</strong> 查看当前的配置项；</li>
 <li><strong>git config –unset [配置键].[配置名]</strong> 删除某项配置；</li>
 <li><strong>git config –global alias.br branch</strong> 设置br为branch命令快捷命令(全局)；</li>
 </ol>
-<hr>
 <h2 id="分支相关"><a href="#分支相关" class="headerlink" title="分支相关"></a>分支相关</h2><ol>
 <li>要删除远端分支，可以 <strong>git push origin :feature-index-1207</strong>，在分支前加个冒号表示为空分支，推送一个空分支到远端就删除了这个分支；</li>
 <li>git是支持将本地分支push到远程的另一个分支的<br><strong>git push origin develop:master -f</strong><br>将本地的develop push到远端的master分支，<strong>-f为强制标记</strong></li>
@@ -238,7 +238,6 @@
 </li>
 <li><strong>git merge –squash [分支名]</strong>将本地另一个分支所有提交合并为一个，并添加到当前分支的暂存区</li>
 </ol>
-<hr>
 <h2 id="对比及回退"><a href="#对比及回退" class="headerlink" title="对比及回退"></a>对比及回退</h2><ol>
 <li><p>git比对本次跟上次提交的区别: <strong>git diff HEAD HEAD^ –stat</strong>(显示的不详细)；</p>
 <blockquote>
@@ -269,7 +268,6 @@
 </li>
 <li><strong>git cherry-pick [commit_id]</strong>可以将其他分支上的提交，在当前分支再提交一次，生成的新commit_id不同</li>
 </ol>
-<hr>
 <h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p><strong>原理</strong>：<br><br>你必须为自己创建一对<em>密匙</em>，并把<em>公钥</em>放在需要访问的服务器上。如果你要连接到SSH服务器上，客户端软件就会向服务器发出请求，<strong>请求用你的<em>公钥</em>进行安全验证</strong>。服务器收到请求之后，先在你在该服务器的目录下寻找你的<em>公钥</em>，然后把它和你发送过来的公钥进行比较。如果两个一致，服务器就用<strong>公钥加密“质询”（challenge）</strong>并把它发送给客户端软件。客户端软件收到“质询”之后就可以用你的<em>密钥解密</em>再把它发送给服务器。<br><strong>SSH key(密钥对)</strong>：<br><br>是git对用户进行身份验证的重要根据，若该用户的电脑上没有ssh key，或者有但是没有添加至ssh agent或你的git account，是无法连接到github进行远端操作的(可通过<strong>ssh -T git@github.com</strong> 命令才验证)<br><br>因此，需要创建ssh key并添加至你的git account。<br>步骤如下：</p>
 <ol>
 <li><strong>本地创建ssh key</strong><br><br>在git bash中输入 <strong>ssh-keygen -t rsa -C “your email address”</strong>命令，然后回车，再输入两次密码即可(该密码在你设置ssh key 到git account时会用到)</li>
@@ -285,13 +283,13 @@
     <!-- 前后页  -->
     <ul class="post-pager">
         
-            <li class="next">
-                <a href= "/2018/01/16/markey/" title= markey >
-                    <span>Next Post</span>
-                    <span>markey</span>
+        
+            <li class="previous">
+                <a href= "/2018/03/20/Jimp node-qrcode生成图片并上传总结/" title= Jimp node-qrcode生成图片并上传总结 >
+                    <span>Previous Post</span>
+                    <span>Jimp node-qrcode生成图片并上传总结</span>
                 </a>
             </li>
-        
         
     </ul>
     <!-- 评论插件 -->
@@ -306,7 +304,7 @@
     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
         
         var disqus_config = function () {
-        this.page.url = "http://blog.markeyme.cn/2018/01/15/git/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.url = "http://blog.markeyme.cn/2018/03/20/git总结/";  // Replace PAGE_URL with your page's canonical URL variable
         this.page.identifier = ""; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
         };
         
@@ -380,7 +378,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#git"><span class="toc-number">1.</span> <span class="toc-text"> - git</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GIT学习笔记"><span class="toc-number"></span> <span class="toc-text">GIT学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#经验总结"><span class="toc-number">1.</span> <span class="toc-text">经验总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置相关"><span class="toc-number">2.</span> <span class="toc-text">配置相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支相关"><span class="toc-number">3.</span> <span class="toc-text">分支相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对比及回退"><span class="toc-number">4.</span> <span class="toc-text">对比及回退</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH"><span class="toc-number">5.</span> <span class="toc-text">SSH</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#GIT学习笔记"><span class="toc-number">1.</span> <span class="toc-text">GIT学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#经验总结"><span class="toc-number">1.1.</span> <span class="toc-text">经验总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置相关"><span class="toc-number">1.2.</span> <span class="toc-text">配置相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支相关"><span class="toc-number">1.3.</span> <span class="toc-text">分支相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对比及回退"><span class="toc-number">1.4.</span> <span class="toc-text">对比及回退</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH"><span class="toc-number">1.5.</span> <span class="toc-text">SSH</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
@@ -394,10 +392,6 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
     
     
     
@@ -476,8 +470,17 @@
         </li>
     
     
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
         <li class="archive-post-item">
-            <span class="archive-post-date">01/15</span><a class="archive-post-title" href= "/2018/01/15/git/" >[Untitled Post]</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/03/20/git总结/" >[Untitled Post]</a>
         </li>
     
     </div>
@@ -485,11 +488,13 @@
         <div class="sidebar-tags">
     <div class="sidebar-tags-name">
     
+        <span class="sidebar-tag-name"><a href= "#">node</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">coding</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">life</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">movies</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">life</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">

@@ -158,25 +158,23 @@
     
     
         <article class="index-post">
-            <a class="abstract-title" href = "/2018/02/08/好好写代码归档/" >
+            <a class="abstract-title" href = "/2018/03/20/Jimp node-qrcode生成图片并上传总结/" >
                 
-                    <span>好好写代码</span>
+                    <span>Jimp node-qrcode生成图片并上传总结</span>
             </a>
-            <a class="content-show-full" href = "/2018/02/08/好好写代码归档/" >
+            <a class="content-show-full" href = "/2018/03/20/Jimp node-qrcode生成图片并上传总结/" >
                 <div class="abstract-content">
-                    好好写代码作为一个刚写代码不久的小菜鸟，工作的半年多让我越发意识到提高代码质量的重要性。从前只会关注实现功能，慢慢的开始关注性能，现阶段则发现其实还有很多细节也是（如可读性、易用性、可维护性、一致性）提高代码质量的关键。“实现功能”跟“优雅地实现功能”是两码事。
-大部分归纳自网络，将多篇文章的观点汇总加工了一下，也融合了一些个人的见解。
-原则
-单一职责原则
-易用性原则
-可读性原则
-复杂性守恒原则：无论你怎么写代码，复杂性都是不会消失的
+                    Node图片处理——Jimp配合node-qrcode生成图片上传总结上周产品那边来了一个需求，需要基于原图针对不同用户生成不同二维码以及文案，并生成新图片，让用户能够保存。接到这个需求时，心里不仅没有拒绝的意思，反而有点小兴奋 ~ 因为又能探索一下新东西。
+大致效果如下，原图：
 
-注：如果逻辑很复杂，那么代码看起来就应该是复杂的。如果逻辑很简单，代码看起来就应该是简单的。
+效果图：
 
+试水canvas刚开始打算在前端用canvas生成图片。我们都知道canvas有合成图片的功能，核心是drawImage及toDataURL这两个方法。
+大致思路是：
 
-
-单一职责原则面向对象五大设计模式基本原则之一。即一部...
+使用drawImage将生成的二维码合并到原图的指定位置
+使用fillText方法生成文案
+用toDataURL将图片转成bas...
                 </div>
             </a>
             <div class="abstract-post-meta">
@@ -184,13 +182,15 @@
                 
                 <div class= abstract-tags >
     
+        <a class="post-tag" href="javascript:void(0);" data-href = node>node</a>
+    
         <a class="post-tag" href="javascript:void(0);" data-href = coding>coding</a>
     
 </div>
                 
                 <!-- date  -->
                 <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/02/08</span>
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/03/20</span>
                 </div>
             </div>
         </article>
