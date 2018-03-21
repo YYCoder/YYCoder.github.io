@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        Markey&#39;s home
+        git总结 · Markey&#39;s home
         
     </title>
     <link rel="icon" href= /assets/favicon.ico>
@@ -72,7 +72,7 @@
                 <a href="/" >Markey&#39;s home</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name"></a>
+                <a href="#" class="post-name">git总结</a>
             </div>
     </div>
     
@@ -93,7 +93,7 @@
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            [Untitled Post]
+            git总结
             <!-- 404 -->
             
         </h1>
@@ -109,10 +109,18 @@
         
             <!-- 文章页标签  -->
             
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = coding>coding</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = git>git</a>
+    
+</div>
+            
             <script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "1", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = "/static/api/js/share.js"];</script>
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2018/03/20</span>
+                <span class="post-intro-time">2018/01/15</span>
                 <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe604;</span>
                     <span id="busuanzi_value_page_pv"></span>
@@ -195,16 +203,11 @@
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <hr>
-<p>title: git总结<br>date: 2018-01-15 23:24:07<br>tags:</p>
-<pre><code>- git
-- coding
-</code></pre><hr>
-<h1 id="GIT学习笔记"><a href="#GIT学习笔记" class="headerlink" title="GIT学习笔记"></a>GIT学习笔记</h1><p>仅为本人在工作过程中学习git的一些经验总结，还是git菜鸟一只，有更好的见解欢迎留言 ~</p>
+        <h1 id="GIT学习笔记"><a href="#GIT学习笔记" class="headerlink" title="GIT学习笔记"></a>GIT学习笔记</h1><p>仅为本人在工作过程中学习git的一些经验总结，还是git菜鸟一只，有更好的见解欢迎留言 ~</p>
 <h2 id="经验总结"><a href="#经验总结" class="headerlink" title="经验总结"></a>经验总结</h2><ol>
 <li>在解冲突时一定要注意，对自己不熟悉的代码要问问是谁写的在解. 如果出现问题，用 git merge –abort 可以将冲突文件退回到merge之前的状态</li>
 <li>在新建一个开发分支时，一定要基于master分支建，不要让其他分支上的代码掺入你的开发分支</li>
-<li>若想更新本地仓库中的分支或tag，用 <strong>git fetch [远程仓库]</strong> 则将远程仓库的所有更新取回本地，<strong>git fetch [远程仓库] &lt;分支名&gt;</strong> 还可以在后面制定分支名，表示只取得该分支的更新，<strong>git fetch –t</strong> 表示取得所有更新及tag</li>
+<li>若想更新本地仓库中的分支或tag，用 <strong>git fetch [远程仓库]</strong> 则将远程仓库的所有更新取回本地，<strong>git fetch [远程仓库] &lt;分支名></strong> 还可以在后面制定分支名，表示只取得该分支的更新，<strong>git fetch –t</strong> 表示取得所有更新及tag</li>
 </ol>
 <h2 id="配置相关"><a href="#配置相关" class="headerlink" title="配置相关"></a>配置相关</h2><ol>
 <li><strong>git config –list</strong> 查看当前的配置项；</li>
@@ -245,7 +248,7 @@
 <p><strong>注</strong>：若要看已经暂存起来的文件和上次提交时的快照之间的差异，可以用 <strong>git diff –cached</strong> 命令。</p>
 </blockquote>
 </li>
-<li><p><strong>git reset –hard [commit_id]</strong> 回退到某次的commit状态，并将<strong>本地源码也恢复到那次commit的状态</strong><br><br><strong>git reset –soft [commit_id]</strong> 回退到某次的commit状态，但<strong>本地源码保持不变，并保存到暂存区</strong>，如需提交，重新提交即可<br><br><strong>git reset [commit-id]（git reset –mixed [commit-id]）</strong> 回退到某次的commit状态，但本地源码保持不变，如需提交，重新提交即可<br><br><strong>git reset HEAD <file></file></strong> 撤销已暂存的文件<br><br><strong>git reset HEAD~[n]</strong> 撤销到倒数第n次提交<br><br><strong>git checkout <file></file></strong> 摒弃对文件的修改(若无暂存状态，则会退到上次commit；  若有，则回退到上次暂存状态)<br><br><strong>git reset [commit-id | 分支名] <file-name></file-name></strong> 也可以将单个文件恢复到指定提交，但无法使用以上模式，<strong>当前分支修改保持不变，reset到的目标分支加入到暂存区</strong></p>
+<li><p><strong>git reset –hard [commit_id]</strong> 回退到某次的commit状态，并将<strong>本地源码也恢复到那次commit的状态</strong><br><br><strong>git reset –soft [commit_id]</strong> 回退到某次的commit状态，但<strong>本地源码保持不变，并保存到暂存区</strong>，如需提交，重新提交即可<br><br><strong>git reset [commit-id]（git reset –mixed [commit-id]）</strong> 回退到某次的commit状态，但本地源码保持不变，如需提交，重新提交即可<br><br><strong>git reset HEAD <file\></file\></strong> 撤销已暂存的文件<br><br><strong>git reset HEAD~[n]</strong> 撤销到倒数第n次提交<br><br><strong>git checkout <file\></file\></strong> 摒弃对文件的修改(若无暂存状态，则会退到上次commit；  若有，则回退到上次暂存状态)<br><br><strong>git reset [commit-id | 分支名] <file-name\></file-name\></strong> 也可以将单个文件恢复到指定提交，但无法使用以上模式，<strong>当前分支修改保持不变，reset到的目标分支加入到暂存区</strong></p>
 <blockquote>
 <p><strong>注</strong>：git reset 到某次commit都会删除git log中那次的commit信息，即回退后就无法再回到之前的commit了<br></p>
 <p><strong>注</strong>：git reset 也可以reset到<em>另一个分支</em>的最后一次提交状态，如: <strong>git reset –hard develop</strong>，同时也可以reset到远端分支的最后一次提交，如<strong>git reset –hard origin/[远端分支名]</strong><br></p>
@@ -283,13 +286,13 @@
     <!-- 前后页  -->
     <ul class="post-pager">
         
-        
-            <li class="previous">
-                <a href= "/2018/03/20/Jimp node-qrcode生成图片并上传总结/" title= Jimp node-qrcode生成图片并上传总结 >
-                    <span>Previous Post</span>
-                    <span>Jimp node-qrcode生成图片并上传总结</span>
+            <li class="next">
+                <a href= "/2018/01/16/markey/" title= markey >
+                    <span>Next Post</span>
+                    <span>markey</span>
                 </a>
             </li>
+        
         
     </ul>
     <!-- 评论插件 -->
@@ -304,8 +307,8 @@
     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
         
         var disqus_config = function () {
-        this.page.url = "https://blog.markeyme.cn/2018/03/20/git总结/";  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = ""; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = "https://blog.markeyme.cn/2018/01/15/git总结/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "git总结"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
         };
         
         (function () { // DON'T EDIT BELOW THIS LINE
@@ -437,26 +440,18 @@
     
     
     
+    
+    
+    
+    
+    
+    
     <div class="total-archive"> Total : 5 </div>
     
     <div class="post-archive">
     
     
     
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/03/20/git总结/" >[Untitled Post]</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
@@ -481,6 +476,11 @@
             <span class="archive-post-date">01/16</span><a class="archive-post-title" href= "/2018/01/16/markey/" >markey</a>
         </li>
     
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/15</span><a class="archive-post-title" href= "/2018/01/15/git总结/" >git总结</a>
+        </li>
+    
     </div>
   </div>
         <div class="sidebar-tags">
@@ -493,6 +493,8 @@
         <span class="sidebar-tag-name"><a href= "#">life</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">movies</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">git</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
