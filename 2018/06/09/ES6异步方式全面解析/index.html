@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>
+        
+        ES6异步方式全面解析 · Markey&#39;s home
+        
+    </title>
+    <link rel="icon" href= /assets/favicon.ico>
+    <!-- 提前加载place holder  -->
+    <style type="text/css">
+        @font-face {
+            font-family: 'Oswald-Regular';
+            src: url(/font/Oswald-Regular.ttf);
+        }
+    </style>
+    <style type="text/css">
+        .site-intro {
+            position: relative;
+            width: 100%;
+            height: 50vh;
+            overflow: hidden;
+            box-shadow: -0.1rem 0 0.5rem 0 rgba(0, 0, 0, 0.5);
+        }
+        .site-intro-placeholder {
+            position: absolute;
+            z-index: -2;
+            top: 0;
+            left: 0px;
+            width: calc(100% + 300px);
+            height: 100%;
+            background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+            background-position: center center;
+            transform: translate3d(-226px, 0, 0);
+            animation: gradient-move 2.5s ease-out 0s 1;
+        }
+        @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+    <link rel="stylesheet" href = /css/style.css?v=20180320 />
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    
+    <script src="/scripts/main.js" defer></script>
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Markey&#39;s home</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">ES6异步方式全面解析</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Markey's home</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-img" style="background-image: url(https://markey-oss1.oss-cn-beijing.aliyuncs.com/post-bg.png)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            ES6异步方式全面解析
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = coding>coding</a>
+    
+</div>
+            
+            <script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "1", "bdSize": "16" }, "share": {} }; 
+                with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = "/static/api/js/share.js"];
+            </script>
+            <script type="text/javascript">
+                // 展示分享按钮部分 2018-03-24
+                document.addEventListener('DOMContentLoaded', function () {
+                    $('.post-intro-meta').css('opacity', '1')                    
+                })
+            </script>
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/06/09</span>
+                <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                    <span class="iconfont-archer">&#xe604;</span>
+                    <span id="busuanzi_value_page_pv"></span>
+                </span>
+                <span class="shareWrapper">
+                    <span class="iconfont-archer shareIcon">
+                        &#xe601;
+                    </span>
+                    <span class="bdsharebuttonbox">
+                        <a href="#" class="bds_more shareText" data-cmd="more">Share</a>
+                    </span>
+                </span>
+            </div>
+        
+    </div>
+</div>
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <script>
+            var browser = {
+                    versions: function () {
+                        var u = window.navigator.userAgent;
+                        return {
+                            userAgent: u,
+                            trident: u.indexOf('Trident') > -1, //IE内核
+                            presto: u.indexOf('Presto') > -1, //opera内核
+                            webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                            android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+                            iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+                            iPad: u.indexOf('iPad') > -1, //是否为iPad
+                            webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+                            weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+                            uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+                        };
+                    }()
+                }
+
+            console.log("userAgent:" + browser.versions.userAgent);
+        </script>
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="ES6异步方式全面解析"><a href="#ES6异步方式全面解析" class="headerlink" title="ES6异步方式全面解析"></a>ES6异步方式全面解析</h1><p>众所周知JS是单线程的，这种设计让JS避免了多线程的各种问题，但同时也让JS同一时刻只能执行一个任务，若这个任务执行时间很长的话（如死循环），会导致JS直接卡死，在浏览器中的表现就是页面无响应，用户体验非常之差。</p>
+<p>因此，在JS中有两种任务执行模式：<strong>同步（Synchronous）和异步（Asynchronous）</strong>。类似函数调用、流程控制语句、表达式计算等就是以同步方式运行的，而异步主要由<code>setTimeout/setInterval</code>、事件实现。</p>
+<hr>
+<h3 id="传统的异步实现"><a href="#传统的异步实现" class="headerlink" title="传统的异步实现"></a>传统的异步实现</h3><p>作为一个前端开发者，无论是浏览器端还是Node，相信大家都使用过事件吧，通过事件肯定就能想到<strong>回调函数</strong>，它就是实现异步最常用、最传统的方式。</p>
+<p>不过要注意，不要以为回调函数就都是异步的，如ES5的数组方法<code>Array.prototype.forEach((ele) =&gt; {})</code>等等，它们也是同步执行的。回调函数只是一种处理异步的方式，属于函数式编程中<strong>高阶函数</strong>的一种，并不只在处理异步问题中使用。</p>
+<p>举个栗子🌰：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 最常见的ajax回调</span></span><br><span class="line"><span class="keyword">this</span>.ajax(<span class="string">'/path/to/api'</span>, &#123;</span><br><span class="line">    params: params</span><br><span class="line">&#125;, (res) =&gt; &#123;</span><br><span class="line">    <span class="comment">// do something...</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>你可能觉得这样并没有什么不妥，但是若有多个ajax或者异步操作需要依次完成呢？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.ajax(<span class="string">'/path/to/api'</span>, &#123;</span><br><span class="line">    params: params</span><br><span class="line">&#125;, (res) =&gt; &#123;</span><br><span class="line">    <span class="comment">// do something...</span></span><br><span class="line">    <span class="keyword">this</span>.ajax(<span class="string">'/path/to/api'</span>, &#123;</span><br><span class="line">      params: params</span><br><span class="line">    &#125;, (res) =&gt; &#123;</span><br><span class="line">        <span class="comment">// do something...</span></span><br><span class="line">        <span class="keyword">this</span>.ajax(<span class="string">'/path/to/api'</span>, &#123;</span><br><span class="line">          params: params</span><br><span class="line">        &#125;, (res) =&gt; &#123;</span><br><span class="line">          <span class="comment">// do something...</span></span><br><span class="line">        &#125;)</span><br><span class="line">        ...</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>回调地狱就出现了。。。😢</p>
+<p>为了解决这个问题，社区中提出了<strong>Promise</strong>方案，并且该方案在ES6中被标准化，如今已广泛使用。</p>
+<hr>
+<h3 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h3><p>使用Promise的好处就是让开发者远离了回调地狱的困扰，它具有如下特点：</p>
+<ol>
+<li><p>对象的状态不受外界影响：</p>
+<ul>
+<li>Promise对象代表一个异步操作，有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和Rejected（已失败）。</li>
+<li>只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。</li>
+</ul>
+</li>
+<li><p>一旦状态改变，就不会再变，任何时候都可以得到这个结果。</p>
+<ul>
+<li>Promise对象的状态改变，只有两种可能：从Pending变为Resolved和从Pending变为Rejected。</li>
+<li>只要这两种情况发生，状态就凝固了，不会再变了，会一直保持这个结果。</li>
+<li>如果改变已经发生了，你再对Promise对象添加回调函数，也会立即得到这个结果。</li>
+<li>这与事件（Event）完全不同，事件的特点是，如果你错过了它，再去监听，是得不到结果的。</li>
+</ul>
+</li>
+<li><p>一旦声明Promise对象（new Promise或Promise.resolve等），就会立即执行它的函数参数，若不是函数参数则不会执行</p>
+</li>
+</ol>
+<p>上面的代码可以改写成如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.ajax(<span class="string">'/path/to/api'</span>, &#123;</span><br><span class="line">    params: params</span><br><span class="line">&#125;).then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// do something...</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.ajax(<span class="string">'/path/to/api'</span>, &#123;</span><br><span class="line">        params: params</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;).then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// do something...</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.ajax(<span class="string">'/path/to/api'</span>, &#123;</span><br><span class="line">        params: params</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>看起来就直观多了，就像一个链条一样将多个操作依次串了起来，再也不用担心回调了~😄</p>
+<p>同时Promise还有许多其他API，如<code>Promise.all</code>、<code>Promise.race</code>、<code>Promise.resolve/reject</code>等等（可以参考<a href="http://es6.ruanyifeng.com/#docs/promise" target="_blank" rel="noopener">阮老师的文章</a>），在需要的时候配合使用都是极好的。</p>
+<p>API无需多说，不过这里我总结了一下自己之前使用Promise踩到的坑以及我对Promise理解不够透彻的地方，希望也能帮助大家更好地使用Promise：</p>
+<ol>
+<li><p><strong>then的返回结果</strong>：</p>
+<ul>
+<li>如果<code>then</code>方法中返回了一个值，那么返回一个“新的”resolved的Promise，并且resolve回调函数的参数值是这个值</li>
+<li>如果<code>then</code>方法中抛出了一个异常，那么返回一个“新的”rejected状态的Promise</li>
+<li>如果<code>then</code>方法返回了一个未知状态（pending）的Promise新实例，那么返回的新Promise就是未知状态</li>
+<li><p>如果<code>then</code>方法没有返回值时，那么会返回一个“新的”resolved的Promise，但resolve回调函数没有参数</p>
+<p>我之前天真的以为<code>then</code>要想链式调用，必须要手动返回一个新的Promise才行</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.resolve(<span class="string">'first promise'</span>)</span><br><span class="line">.then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// return Promise.resolve('next promise')</span></span><br><span class="line">    <span class="comment">// 实际上两种返回是一样的</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'next promise'</span></span><br><span class="line">&#125;)</span><br><span class="line">.then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>一个Promise可设置多个then回调，会按定义顺序执行</strong>，如下</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">  res(<span class="string">'hahaha'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">p.then(<span class="built_in">console</span>.log)</span><br><span class="line">p.then(<span class="built_in">console</span>.warn)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这种方式与链式调用不要搞混，链式调用实际上是then方法返回了新的Promise，而不是原有的，可以验证一下：</span></span><br><span class="line"><span class="keyword">const</span> p1 = <span class="built_in">Promise</span>.resolve(<span class="number">123</span>)</span><br><span class="line"><span class="keyword">const</span> p2 = p1.then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(p1 === p2)</span><br><span class="line">    <span class="comment">// false</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>then</code>或<code>catch</code>返回的值不能是当前promise本身，否则会造成死循环</strong>：</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> promise = <span class="built_in">Promise</span>.resolve()</span><br><span class="line">.then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> promise</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>then</code>或者<code>catch</code>的参数期望是函数，传入非函数则会发生值穿透</strong>：</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.resolve(<span class="number">1</span>)</span><br><span class="line">  .then(<span class="number">2</span>)</span><br><span class="line">  .then(<span class="built_in">Promise</span>.resolve(<span class="number">3</span>))</span><br><span class="line">  .then(<span class="built_in">console</span>.log)</span><br><span class="line"><span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>process.nextTick</code>和<code>promise.then</code>都属于microtask，而<code>setImmediate</code>、<code>setTimeout</code>属于macrotask</strong></p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">process.nextTick(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'nextTick'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">Promise</span>.resolve()</span><br><span class="line">  .then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'then'</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'setImmediate'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'end'</span>)</span><br><span class="line"><span class="comment">// end nextTick then setImmediate</span></span><br></pre></td></tr></table></figure>
+<p> 有关<strong>microtask</strong>及<strong>macrotask</strong>可以看<a href="https://juejin.im/entry/58d4df3b5c497d0057eb99ff" target="_blank" rel="noopener">这篇文章</a>，讲得很细致。</p>
+</li>
+</ol>
+<p>但Promise也存在弊端，那就是若步骤很多的话，需要写一大串<code>.then()</code>，尽管步骤清晰，但是对于我们这些追求极致优雅的前端开发者来说，代码全都是Promise的API（<code>then</code>、<code>catch</code>），操作的语义太抽象，还是让人不够满意呀~</p>
+<hr>
+<h3 id="Generator"><a href="#Generator" class="headerlink" title="Generator"></a>Generator</h3><p>Generator是ES6规范中对协程的实现，但目前大多被用于异步模拟同步上了。</p>
+<p>执行它会返回一个<a href="http://es6.ruanyifeng.com/#docs/iterator" target="_blank" rel="noopener">遍历器对象</a>，而每次调用<code>next</code>方法则将函数执行到下一个<code>yield</code>的位置，若没有则执行到return或末尾。</p>
+<p>依旧是不再赘述API，对它还不了解的可以查阅<a href="http://es6.ruanyifeng.com/#docs/generator#%E7%AE%80%E4%BB%8B" target="_blank" rel="noopener">阮老师的文章</a>。</p>
+<p>通过Generator实现异步：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="keyword">const</span> res = <span class="keyword">yield</span> getData()</span><br><span class="line">   <span class="built_in">console</span>.log(res)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 异步方法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getData</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">   setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">       it.next(&#123;</span><br><span class="line">           name: <span class="string">'yuanye'</span>,</span><br><span class="line">           age: <span class="number">22</span></span><br><span class="line">       &#125;)</span><br><span class="line">   &#125;, <span class="number">2000</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> it = main()</span><br><span class="line">it.next()</span><br></pre></td></tr></table></figure>
+<p>先不管下面的<code>next</code>方法，单看<code>main</code>方法中，<code>getData</code>模拟的异步操作已经看起来很像同步了。但是追求完美的我们肯定是无法忍受每次还要手动调用<code>next</code>方法来继续执行流程的，为此<a href="https://github.com/tj" target="_blank" rel="noopener">TJ大神</a>为社区贡献了<a href="https://github.com/tj/co" target="_blank" rel="noopener">co模块</a>来自动化执行Generator，它的实现原理非常巧妙，源码只有短短的200多行，感兴趣可以去研究下。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> co = <span class="built_in">require</span>(<span class="string">'co'</span>)</span><br><span class="line"></span><br><span class="line">co(<span class="function"><span class="keyword">function</span>* (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> res1 = <span class="keyword">yield</span> [<span class="string">'step-1'</span>]</span><br><span class="line">  <span class="built_in">console</span>.log(res1)</span><br><span class="line">  <span class="comment">// 若yield后面返回的是promise，则会等待它resolved后继续执行之后的流程</span></span><br><span class="line">  <span class="keyword">const</span> res2 = <span class="keyword">yield</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      res(<span class="string">'step-2'</span>)</span><br><span class="line">    &#125;, <span class="number">2500</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="built_in">console</span>.log(res2)</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'end'</span></span><br><span class="line">&#125;).then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'end: '</span> + data)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>这样就让异步的流程完全以同步的方式展示出来啦😋~</p>
+<hr>
+<h3 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async/Await"></a>Async/Await</h3><p>ES7标准中引入的async函数，是对js异步解决方案的进一步完善，它有如下特点：</p>
+<ol>
+<li><strong>内置执行器</strong>：不用像generator那样反复调用next方法，或者使用<strong>co模块</strong>，调用即会自动执行，并返回结果</li>
+<li><strong>返回Promise</strong>：generator返回的是iterator对象，因此还不能直接用<code>then</code>来指定回调</li>
+<li><strong>await更友好</strong>：相比<strong>co模块</strong>约定的generator的yield后面只能跟promise或thunk函数或者对象及数组，await后面既可以是promise也可以是任意类型的值（Object、Number、Array，甚至Error等等，不过此时等同于同步操作）</li>
+</ol>
+<p>进一步说，<strong>async函数完全可以看作多个异步操作，包装成的一个Promise对象，而await命令就是内部then命令的语法糖</strong>。</p>
+<p>改写后代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">testAsync</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> res1 = <span class="keyword">await</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      res(<span class="string">'step-1'</span>)</span><br><span class="line">    &#125;, <span class="number">2000</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="built_in">console</span>.log(res1)</span><br><span class="line">  <span class="keyword">const</span> res2 = <span class="keyword">await</span> <span class="built_in">Promise</span>.resolve(<span class="string">'step-2'</span>)</span><br><span class="line">  <span class="built_in">console</span>.log(res2)</span><br><span class="line">  <span class="keyword">const</span> res3 = <span class="keyword">await</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      res(<span class="string">'step-3'</span>)</span><br><span class="line">    &#125;, <span class="number">2000</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="built_in">console</span>.log(res3)</span><br><span class="line">  <span class="keyword">return</span> [res1, res2, res3, <span class="string">'end'</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">testAsync().then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(data)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>这样不仅语义还是流程都非常清晰，即便是不熟悉业务的开发者也能一眼看出哪里是异步操作。</p>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本文汇总了当前主流的JS异步解决方案，其实没有哪一种方法最好或不好，都是在不同的场景下能发挥出不同的优势。而且目前都是Promise与其他两个方案配合使用的，所以不存在你只学会async/await或者generator就可以玩转异步。没准以后又会出现一个新的方案，将已有的这几种方案颠覆呢 ~ </p>
+<p>在这不断变化、发展的时代，我们前端要放开自己的眼界，拥抱变化，持续学习，才能成长，写出优质的代码😜~</p>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/2018/03/25/工程师的职场认知/" title= 工程师的一些职场认知 >
+                    <span>Previous Post</span>
+                    <span>工程师的一些职场认知</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        
+        var disqus_config = function () {
+        this.page.url = "https://blog.markeyme.cn/2018/06/09/ES6异步方式全面解析/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "ES6异步方式全面解析"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        
+        (function () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://markey.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    
+    <!--PC版-->
+
+    <!--PC版-->
+
+
+    
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:markeyyuan@gmail.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/YYCoder" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+        
+    
+        
+            
+                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title="rss"></a>
+            
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">Theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">VISITOR VOLUME: <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    
+    <!-- 备案信息 -->
+    <div class="record">
+        <a href="http://www.miitbeian.gov.cn/">京ICP备18014678号-1</a>
+    </div>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+        
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ES6异步方式全面解析"><span class="toc-number">1.</span> <span class="toc-text">ES6异步方式全面解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#传统的异步实现"><span class="toc-number">1.0.1.</span> <span class="toc-text">传统的异步实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise"><span class="toc-number">1.0.2.</span> <span class="toc-text">Promise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generator"><span class="toc-number">1.0.3.</span> <span class="toc-text">Generator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Async-Await"><span class="toc-number">1.0.4.</span> <span class="toc-text">Async/Await</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">1.0.5.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top">&#xe639;</div>
+    <div class="sidebar">
+    <div class="sidebar-header sidebar-header-show-archive">
+        <div class="sidebar-category">
+            <span class="sidebar-archive-link"><span class="iconfont-archer">&#xe67d;</span>Archive</span>
+            <span class="sidebar-tags-link"><span class="iconfont-archer">&#xe610;</span>Tag</span>
+        </div>
+    </div>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-archive">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 7 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/09</span><a class="archive-post-title" href= "/2018/06/09/ES6异步方式全面解析/" >ES6异步方式全面解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/25</span><a class="archive-post-title" href= "/2018/03/25/工程师的职场认知/" >工程师的一些职场认知</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/20</span><a class="archive-post-title" href= "/2018/03/20/Jimp node-qrcode生成图片并上传总结/" >Jimp node-qrcode生成图片并上传总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/03</span><a class="archive-post-title" href= "/2018/03/03/观《盲山》有感/" >观《盲山》有感</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/08</span><a class="archive-post-title" href= "/2018/02/08/好好写代码归档/" >好好写代码</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/16</span><a class="archive-post-title" href= "/2018/01/16/markey/" >markey</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/15</span><a class="archive-post-title" href= "/2018/01/15/git总结/" >git总结</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name"><a href= "#">node</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">coding</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">git</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">life</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">movies</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">profession</a></span>
+    
+    </div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: false
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tag-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var jsInfo = {
+        root: '/'
+    }
+</script>
+    <!-- 不蒜子  -->
+    
+    <script async defer src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ统计  -->
+    
+    </div>
+    </body>
+</html>
+
+
