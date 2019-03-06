@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>
+        
+        Shadowsocks翻墙原理探究 · Markey&#39;s home
+        
+    </title>
+    <link rel="icon" href= /assets/favicon.ico>
+    <!-- 提前加载place holder  -->
+    <style type="text/css">
+        @font-face {
+            font-family: 'Oswald-Regular';
+            src: url(/font/Oswald-Regular.ttf);
+        }
+    </style>
+    <style type="text/css">
+        .site-intro {
+            position: relative;
+            width: 100%;
+            height: 50vh;
+            overflow: hidden;
+            box-shadow: -0.1rem 0 0.5rem 0 rgba(0, 0, 0, 0.5);
+        }
+        .site-intro-placeholder {
+            position: absolute;
+            z-index: -2;
+            top: 0;
+            left: 0px;
+            width: calc(100% + 300px);
+            height: 100%;
+            background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+            background-position: center center;
+            transform: translate3d(-226px, 0, 0);
+            animation: gradient-move 2.5s ease-out 0s 1;
+        }
+        @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+    <link rel="stylesheet" href = /css/style.css?v=20180320 />
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    
+    <script src="/scripts/main.js" defer></script>
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Markey&#39;s home</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Shadowsocks翻墙原理探究</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Markey's home</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-img" style="background-image: url(https://markey-oss1.oss-cn-beijing.aliyuncs.com/post-bg.png)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            Shadowsocks翻墙原理探究
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = coding>coding</a>
+    
+</div>
+            
+            <script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "1", "bdSize": "16" }, "share": {} }; 
+                with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = "/static/api/js/share.js"];
+            </script>
+            <script type="text/javascript">
+                // 展示分享按钮部分 2018-03-24
+                document.addEventListener('DOMContentLoaded', function () {
+                    $('.post-intro-meta').css('opacity', '1')                    
+                })
+            </script>
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2019/02/28</span>
+                <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                    <span class="iconfont-archer">&#xe604;</span>
+                    <span id="busuanzi_value_page_pv"></span>
+                </span>
+                <span class="shareWrapper">
+                    <span class="iconfont-archer shareIcon">
+                        &#xe601;
+                    </span>
+                    <span class="bdsharebuttonbox">
+                        <a href="#" class="bds_more shareText" data-cmd="more">Share</a>
+                    </span>
+                </span>
+            </div>
+        
+    </div>
+</div>
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <script>
+            var browser = {
+                    versions: function () {
+                        var u = window.navigator.userAgent;
+                        return {
+                            userAgent: u,
+                            trident: u.indexOf('Trident') > -1, //IE内核
+                            presto: u.indexOf('Presto') > -1, //opera内核
+                            webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                            android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+                            iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+                            iPad: u.indexOf('iPad') > -1, //是否为iPad
+                            webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+                            weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+                            uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+                        };
+                    }()
+                }
+
+            console.log("userAgent:" + browser.versions.userAgent);
+        </script>
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="Shadowsocks翻墙原理探究"><a href="#Shadowsocks翻墙原理探究" class="headerlink" title="Shadowsocks翻墙原理探究"></a>Shadowsocks翻墙原理探究</h1><p>Shadowsocks 是目前公认的科学上网神器，由 <a href="https://github.com/clowwindy" target="_blank" rel="noopener">clowwindy</a> 开发，它的出现极大地便利了广大程序猿们，让我们能够绕过 GFW 方便地访问 google 或 youtube 等国际大型网站。它的核心原理是<strong>基于 Socks5 代理协议的网络数据加密传输</strong>，具体在下面会做进一步介绍。</p>
+<p>本文会以如下目录依次展开：</p>
+<ul>
+<li>GFW</li>
+<li>Socks5协议</li>
+<li>Shadowsocks工作原理</li>
+<li>Shadowsocks源码解析</li>
+</ul>
+<hr>
+<h2 id="GFW"><a href="#GFW" class="headerlink" title="GFW"></a>GFW</h2><p>全称是 Great Firewall of China，国内一般称作“防火墙”或俗称“墙”，正是因为这个东西的存在，让整个中国大陆区域内的网络受其控制，成为了众所周知的“局域网”。</p>
+<p>防火墙采用技术手段主要有如下几种：</p>
+<ol>
+<li><p><strong>DNS污染/劫持</strong></p>
+<p> 我们都知道在互联网中访问一个站点前，会先通过 DNS 解析将域名解析成对应的 IP，然后才能通过 IP 进行 HTTP 访问。而 DNS 劫持即在 DNS 解析阶段动手脚。由于 DNS 协议是基于 UDP 的协议，该协议具有无状态、不可靠传输的特点，因此只要是先收到了响应就会抛弃之后的响应。</p>
+<p> GFW 就利用了这个特性。它会在主要的 DNS 流量出口进行检测，若发现黑名单域名，就会伪装成域名服务器向客户端发回虚假回应，导致客户端请求到虚假的 IP。</p>
+</li>
+<li><p><strong>IP封锁</strong><br> 客户端在解析得到 IP 后，向服务端请求的过程中会经过一系列路由的转发，在路由器转发的过程中会根据路由表中存储的表项来决定下一跳的路由器或主机，选择的下一跳地址会根据路由协议来决定。</p>
+<p> 早期使用的是ACL（访问控制列表）来进行IP黑名单限制，现在更高效的路由扩散技术来进行对特定的IP进行封锁。</p>
+<p> 早期路由器都是采用静态路由协议，每一条路由需要进行人工来配置路由表项，或者配置一些策略，在决定路由转发，这时可以通过检测，对相应要封锁的IP配置一条错误的路由，将之牵引到一个不做任何操作的服务器（黑洞服务器），此服务器所要做的就是丢包，这样便无声息封锁掉了。动态路由协议的出现可以更高效的进行屏蔽，动态路由协议可以让路由器通过交换路由表信息来动态更新路由表，并通过寻址算法来决定最优化的路径。因此可以通过动态路由协议的路由重分发功能将错误的信息散播到整个网络，从而达到屏蔽目的。</p>
+</li>
+<li><p><strong>IP端口黑名单</strong><br> 该手段可以结合上边提到的IP封锁技术，将封锁精确到具体的端口，使该IP的具体端口接收不到请求，从而达到更细粒度的封锁。经常被封锁的端口如下：</p>
+<ol>
+<li>SSH的TCP协议22端口</li>
+<li>HTTP的80端口</li>
+<li>PPTP类型VPN使用的TCP协议1723端口，L2TP类型VPN使用的UDP协议1701端口，IPSec类型VPN使用的UDP协议500端口和4500端口，OpenVPN默认使用的TCP协议和UDP协议的1194端口</li>
+<li>TLS/SSL/HTTPS的TCP协议443端口</li>
+<li>Squid Cache的TCP协议3128端口</li>
+</ol>
+</li>
+<li><p><strong>无状态TCP连接重置</strong></p>
+<p> <img src="https://markey-oss1.oss-cn-beijing.aliyuncs.com/20170605110405666.png" alt="TCP三次握手"></p>
+<p> TCP连接会有三次握手，此种攻击方式利用了该特点来进行攻击，gfw会对特定IP的所有数据包进行监控，会对特定黑名单动作进行监控（如TLS加密连接），当进行TCP连接时，会在TCP连接的第二部SYNC-ACK阶段，伪装成客户端和服务器同时向真实的客户端和服务器发送RESET重置，以很低的成本来达到切断双方连接的目的。与丢弃客户机的包相比，在丢包后客户机会不断的发起重试，这样会加重黑洞服务器的负担，利用TCP连接重置来断开连接，客户机也不必发送ACK来确认，这样成本就要低得多。</p>
+</li>
+<li><p><strong>TCP协议关键字阻断</strong><br> 该手段在无状态TCP连接重置手段之上，加入了关键字过滤功能，当协议的头部包含特定的关键字便对其连接进行重置，比如HTTP协议、ED2K协议等等。</p>
+</li>
+<li><p><strong>深度包检测</strong><br> 深度数据包检测（Deep packet inspection,DPI）是一种于应用层对网络上传递的数据进行侦测与处理的技术，被广泛用于入侵检测、流量分析及数据挖掘。就字面意思考虑，所谓“深度”是相对于普通的报文检测而言的——相较普通的报文检测，DPI可对报文内容和协议特征进行检测。<br>基于必要的硬件设施、适宜的检测模型及相应的模式匹配算法，gfw能够精确且快速地从实时网络环境中判别出有悖于预期标准的可疑流量，并对此及时作出审查者所期望的应对措施。</p>
+</li>
+</ol>
+<hr>
+<h2 id="Socks5协议"><a href="#Socks5协议" class="headerlink" title="Socks5协议"></a>Socks5协议</h2><p>Socks5协议是一种应用层的代理协议，在OSI七层模型中位于会话层</p>
+<p>与Socks4相比，它多出了如下几点特性：</p>
+<ul>
+<li>比Socks4更加安全，增加了用户鉴权</li>
+<li>支持UDP协议</li>
+<li>地址方面支持域名及IPV6</li>
+<li>SOCKS工作在比HTTP代理更低的层级</li>
+<li>工作方式更加透明，不会重写或解释报头</li>
+</ul>
+<h3 id="Socks5工作原理"><a href="#Socks5工作原理" class="headerlink" title="Socks5工作原理"></a>Socks5工作原理</h3><p>参考<a href="https://tools.ietf.org/pdf/rfc1928.pdf" target="_blank" rel="noopener">论文</a></p>
+<p>我们都知道计算机网络模型常用的有如下两种，理解了它们，有助于我们理解 Socks5 的工作原理：</p>
+<p><img src="https://markey-oss1.oss-cn-beijing.aliyuncs.com/2018032308230858.png" alt="网络模型"></p>
+<p>TCP/IP 模型的应用层对应 OSI 模型的前三层，链路层对应 OSI 的最后两层。计算机在网络中进行通信的时候，请求方、服务方都会有一个数据封装、解封的过程，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">          请求方                                   接收方</span><br><span class="line">应用层      --&gt;      data                data       --&gt;         应用层</span><br><span class="line">  |                   |                   ∧                      ∧</span><br><span class="line">  ∨                   ∨                   |                      |</span><br><span class="line">传输层      --&gt;     segment             segment     --&gt;         传输层</span><br><span class="line">  |                   |                   ∧                      ∧</span><br><span class="line">  ∨                   ∨                   |                      |</span><br><span class="line">网络层      --&gt;     package             package     --&gt;         网络层</span><br><span class="line">  |                   |                   ∧                      ∧</span><br><span class="line">  ∨                   ∨                   |                      |</span><br><span class="line">链路层      --&gt;      frame   &gt;&gt;传输&gt;&gt;    frame       --&gt;        链路层</span><br></pre></td></tr></table></figure>
+<p>流程大概是应用层要发起一个请求会先将要传输的数据及协议（即 data）传递给传输层，传输层收到后，会将数据分片（segment），并加上 TCP/UDP 的协议头，之后在进入网络层时再将传输层的分片加上 IP 头，最后进入链路层加上帧头和帧尾完成数据的封装，开始传递。</p>
+<p>在接收端则是完全相反的一套流程，就不再赘述。</p>
+<p>而 Socks5 则是属于 TCP/IP 模型中应用层协议，用 Socks5 请求的流程大概如下：</p>
+<ol>
+<li>在应用层先将数据添加 Socks5 头部，发送给传输层</li>
+<li>传输层将 Socks5 协议数据分片，添加 TCP/UDP 头部分发给网络层</li>
+<li>网络层将 TCP/UDP 协议数据添加 IP 协议头，发往链路层</li>
+<li>链路层添加帧头与尾，将数据封装成帧发往接收方</li>
+</ol>
+<h3 id="基于TCP的Socks5"><a href="#基于TCP的Socks5" class="headerlink" title="基于TCP的Socks5"></a>基于TCP的Socks5</h3><blockquote>
+<p>参考<a href="https://zh.wikipedia.org/zh-hans/SOCKS#SOCKS5" target="_blank" rel="noopener">维基百科</a></p>
+</blockquote>
+<p><strong>Socks5协商</strong>：即客户端与服务端确认验证方式的一次交互。</p>
+<p>先由客户端发起第一次握手，进行版本、方法的选择：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+----+----------+----------+</span><br><span class="line">|VER | NMETHODS | METHODS  |</span><br><span class="line">+----+----------+----------+</span><br><span class="line">| 1  |    1     | 1 to 255 |</span><br><span class="line">+----+----------+----------+</span><br></pre></td></tr></table></figure>
+<ul>
+<li>VER是SOCKS版本，这里应该是0x05；</li>
+<li>NMETHODS是METHODS部分的长度；</li>
+<li>METHODS是客户端支持的认证方式列表，每个方法占1字节。当前的定义是：<ul>
+<li>0x00 不需要认证</li>
+<li>0x01 GSSAPI</li>
+<li>0x02 用户名、密码认证</li>
+<li>0x03 - 0x7F由IANA分配（保留）</li>
+<li>0x80 - 0xFE为私人方法保留</li>
+<li>0xFF 无可接受的方法</li>
+</ul>
+</li>
+</ul>
+<p>服务端应当在客户端提供的方法中选择一个，并返回：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+----+---------+</span><br><span class="line">|VER | METHODS |</span><br><span class="line">+----+---------+</span><br><span class="line">| 1  |    1    |</span><br><span class="line">+----+---------+</span><br></pre></td></tr></table></figure>
+<p>认证结束后，客户端就可以继续发起对请求信息的握手，格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+----+-----+-------+------+----------+----------+</span><br><span class="line">|VER | CMD |  RSV  | ATYP | DST.ADDR | DST.PORT |</span><br><span class="line">+----+-----+-------+------+----------+----------+</span><br><span class="line">| 1  |  1  | 0x00  |  1   | Variable |    2     |</span><br><span class="line">+----+-----+-------+------+----------+----------+</span><br></pre></td></tr></table></figure>
+<ul>
+<li>VER是SOCKS版本，这里应该是0x05；</li>
+<li>CMD是SOCK的命令码<ul>
+<li>0x01表示CONNECT请求</li>
+<li>0x02表示BIND请求，指双向连接，比如FTP协议，一个连接用于发送命令指令，另外一个连接用于传输数据</li>
+<li>0x03表示UDP转发</li>
+</ul>
+</li>
+<li>RSV 0x00，保留</li>
+<li>ATYP DST.ADDR类型<ul>
+<li>0x01 IPv4地址，DST.ADDR部分4字节长度</li>
+<li>0x03 域名，DST.ADDR部分第一个字节为域名长度，DST.ADDR剩余的内容为域名，没有\0结尾</li>
+<li>0x04 IPv6地址，16个字节长度</li>
+</ul>
+</li>
+<li>DST.ADDR 目的地址</li>
+<li>DST.PORT 网络字节序表示的目的端口</li>
+</ul>
+<p>服务端收到后，应当返回对应的应答：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+----+-----+-------+------+----------+----------+</span><br><span class="line">|VER | REP |  RSV  | ATYP | BND.ADDR | BND.PORT |</span><br><span class="line">+----+-----+-------+------+----------+----------+</span><br><span class="line">| 1  |  1  | 0x00  |  1   | Variable |    2     |</span><br><span class="line">+----+-----+-------+------+----------+----------+</span><br></pre></td></tr></table></figure>
+<ul>
+<li>VER是SOCKS版本，这里应该是0x05；</li>
+<li>REP应答字段<ul>
+<li>0x00表示成功</li>
+<li>0x01普通SOCKS服务器连接失败</li>
+<li>0x02现有规则不允许连接</li>
+<li>0x03网络不可达</li>
+<li>0x04主机不可达</li>
+<li>0x05连接被拒</li>
+<li>0x06TTL超时</li>
+<li>0x07不支持的命令</li>
+<li>0x08不支持的地址类型</li>
+<li>0x09 - 0xFF未定义</li>
+</ul>
+</li>
+<li>RSV 0x00，保留</li>
+<li>ATYP BND.ADDR类型<ul>
+<li>0x01 IPv4地址，DST.ADDR部分4字节长度</li>
+<li>0x03域名，DST.ADDR部分第一个字节为域名长度，DST.ADDR剩余的内容为域名，没有\0结尾</li>
+<li>0x04 IPv6地址，16个字节长度</li>
+</ul>
+</li>
+<li>BND.ADDR 服务器绑定的地址</li>
+<li>BND.PORT 网络字节序表示的服务器绑定的端口</li>
+</ul>
+<p>在方法、请求握手完成后，还可以进行用户名、密码认证，此处就不在赘述，可上<a href="https://zh.wikipedia.org/zh-hans/SOCKS#SOCKS5" target="_blank" rel="noopener">维基百科</a>中查阅。</p>
+<hr>
+<h2 id="Shadowsocks工作原理"><a href="#Shadowsocks工作原理" class="headerlink" title="Shadowsocks工作原理"></a>Shadowsocks工作原理</h2><blockquote>
+<p>终于说到Shadowsocks工作原理了</p>
+</blockquote>
+<p>Shadowsocks的工作方式与普通的Socks5代理的不同之处在于，它是一个客户端-服务端模型，而普通的Socks5代理则是只有一个Socks代理服务器，如下图：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Socks5客户端  &lt;---Socks5---&gt;   Socks5服务器  &lt;---正常请求---&gt;  目标主机</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Socks 5客户端在与Socks 5服务器交互的整个过程是有可能暴露在整个互联网中的，因此很容易被监控到，根据协议特征也可以很容易识别出来，若采取普通的Socks 5代理方式的话，若用于翻墙去看外边的世界，这种方式很容易被墙，代理服务器的IP极容易被加入黑名单，也就导致此代理的寿终正寝，因此一种新的方式Shadowsocks出现了。</p>
+</blockquote>
+<p>而Shadowsocks则处理的更加巧妙，为了防止与代理服务器的交互过程暴露，需要在本地起一个Socks5服务，让客户端发起的请求都与本地Socks5服务进行交互，再经过数据加密，传输到代理服务器上去，代理服务器也通过Socks5协议进行解析，并向目标服务器发起请求。流程大致如下图：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Socks5客户端  &lt;---Socks5---&gt;   sslocal  </span><br><span class="line">                                   ∧</span><br><span class="line">                                   |</span><br><span class="line">                                  密文</span><br><span class="line">                                   |</span><br><span class="line">                                   ∨</span><br><span class="line">                                 ssserver  &lt;---正常请求---&gt;  目标主机</span><br></pre></td></tr></table></figure>
+<p>其他方面基本都一样，主要的不同之处在于Shadowsocks将Socks5服务端拆解成两部分：</p>
+<ul>
+<li><p><strong>本地Socks5服务</strong>：用于监听客户端发起的请求，对于客户端来说是完全透明的，就相当于Socks5服务器</p>
+</li>
+<li><p><strong>远程Socks5服务</strong>：用于监听本地发起的Socks5请求，解析请求、发送给目标服务器，并将相应返回给本地Socks5服务</p>
+</li>
+<li><p><strong>本地 - 远程</strong>：本地与远程的交互过程都是加密后进行的。本地将Socks5请求准备好后，先加密发送给远程Socks5服务，远程收到后也先进行解密再进行代理，之后将收到的响应数据包加密返回给本地</p>
+</li>
+</ul>
+<hr>
+<h2 id="部分源码分析"><a href="#部分源码分析" class="headerlink" title="部分源码分析"></a>部分源码分析</h2><p>Shadowsocks 原版是 python 写的，之后又不断涌现了 C++、GO 等多个版本，由于本人只对 js 比较熟悉，因此以 <a href="https://www.npmjs.com/package/shadowsocks-js" target="_blank" rel="noopener">shadowsocks-js</a> 为例</p>
+<blockquote>
+<p>官方的 <a href="https://github.com/shadowsocks/shadowsocks-nodejs" target="_blank" rel="noopener">shadowsocks-nodejs</a> 由于 nodejs 的内存占用问题，已经停止维护了，没有以它为例，本例可以说是它的一个替代方案。</p>
+</blockquote>
+<p>主要功能代码都在 lib 目录下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── bin</span><br><span class="line">│   ├── localssjs // 本地服务启动命令</span><br><span class="line">│   └── serverssjs // 远程服务启动命令</span><br><span class="line">├── config.json // ss配置</span><br><span class="line">├── lib</span><br><span class="line">│   ├── auth.js // Socks5用户校验相关方法</span><br><span class="line">│   ├── cli.js // 命令行启动工具</span><br><span class="line">│   ├── createUDPRelay.js // UDP代理相关</span><br><span class="line">│   ├── daemon.js // 守护进程相关</span><br><span class="line">│   ├── defaultConfig.js // 默认ss配置</span><br><span class="line">│   ├── encryptor.js // 加密、解密相关方法</span><br><span class="line">│   ├── filter.js</span><br><span class="line">│   ├── gfwlistUtils.js // 防火墙相关方法，用于PAC切换</span><br><span class="line">│   ├── logger.js</span><br><span class="line">│   ├── pacServer.js // PAC服务</span><br><span class="line">│   ├── pid.js</span><br><span class="line">│   ├── recordMemoryUsage.js // 内存记录</span><br><span class="line">│   ├── ssLocal.js // 本地Socks5服务</span><br><span class="line">│   ├── ssServer.js // 远程Socks5服务</span><br><span class="line">│   └── utils.js</span><br><span class="line">├── logs</span><br><span class="line">│   ├── local.log</span><br><span class="line">│   └── server.log</span><br><span class="line">├── node_modules</span><br><span class="line">├── pac</span><br><span class="line">│   ├── gfwlist.txt</span><br><span class="line">│   └── user.txt</span><br><span class="line">├── package.json</span><br><span class="line">├── src</span><br><span class="line">├── test</span><br><span class="line">└── vendor</span><br></pre></td></tr></table></figure>
+<p>核心代码就只有 ssLocal.js、ssServer.js，下面会分别讲解其作用</p>
+<p>ssLocal.js 只有400多行，还算比较容易看懂，其核心方法如下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 处理 method 握手</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleMethod</span>(<span class="params">connection, data, authInfo</span>) </span>&#123;</span><br><span class="line">  ...处理 method 握手响应头部</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 返回响应</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  connection.write(buf);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> method === <span class="number">0</span> ? <span class="number">1</span> : <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fetchUsernamePassword</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">  ...获取用户名及密码，用于Socks5身份校验</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">responseAuth</span>(<span class="params">success, connection</span>) </span>&#123;</span><br><span class="line">  ...响应身份校验</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">usernamePasswordAuthetication</span>(<span class="params">connection, data, authInfo</span>) </span>&#123;</span><br><span class="line">  ...调用上述两方法，处理身份校验</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 处理 request 握手，并链接远程Socks5服务器，添加事件监听</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleRequest</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    connection, data, _ref, </span></span></span><br><span class="line"><span class="function"><span class="params">    dstInfo, onConnect, onDestroy,</span></span></span><br><span class="line"><span class="function"><span class="params">    isClientConnected</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">  ...准备响应数据</span><br><span class="line">  <span class="keyword">if</span> (isUDPRelay) &#123;</span><br><span class="line">    ...单独针对UDP请求处理</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 将客户端发送的数据进行加密，用于之后传输给远程服务器</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  tmp = (<span class="number">0</span>, _encryptor.createCipher)(password, method, data.slice(<span class="number">3</span>)); <span class="comment">// skip VER, CMD, RSV</span></span><br><span class="line">  cipher = tmp.cipher;</span><br><span class="line">  cipheredData = tmp.data;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 连接远程服务器</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">var</span> clientToRemote = (<span class="number">0</span>, _net.connect)(clientOptions, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    logger.warn(<span class="string">'Local server has connected remote server.'</span>);</span><br><span class="line">    onConnect();</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 收到远程服务器的响应后，先解密再传递给客户端</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  clientToRemote.on(<span class="string">'data'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">remoteData</span>) </span>&#123;</span><br><span class="line">    ...对远程服务器返回的数据解密，并返回给客户端</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 完成 request 握手</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  connection.write(repBuf);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 处理客户端与本地服务的链接，判断不同的阶段分别进行处理</span></span><br><span class="line"><span class="comment"> *  0：method握手阶段</span></span><br><span class="line"><span class="comment"> *  1：request握手阶段</span></span><br><span class="line"><span class="comment"> *  2：数据传输阶段</span></span><br><span class="line"><span class="comment"> *  3：Socks5用户校验阶段</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleConnection</span>(<span class="params">config, connection</span>) </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 处理来自客户端的请求，不同阶段根据不同方式处理</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  connection.on(<span class="string">'data'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (stage) &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">0</span>: ...处理method握手</span><br><span class="line">      <span class="keyword">case</span> <span class="number">1</span>: ...处理request握手</span><br><span class="line">      <span class="keyword">case</span> <span class="number">2</span>: ...将数据传输给远程服务</span><br><span class="line">      <span class="keyword">case</span> <span class="number">3</span>: ...处理用户校验</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createServer</span>(<span class="params">config</span>) </span>&#123;</span><br><span class="line">  ...启动本地服务，添加事件监听</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ssServer.js 代码相对来说更简单，只有不到300行，核心方法只有三个</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 链接目标服务器，并将响应的数据加密返回给本地</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createClientToDst</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    connection, data, password,</span></span></span><br><span class="line"><span class="function"><span class="params">    method, onConnect, onDestroy,</span></span></span><br><span class="line"><span class="function"><span class="params">    isLocalConnected</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 链接目标服务器</span></span><br><span class="line">  <span class="keyword">var</span> clientToDst = (<span class="number">0</span>, _net.connect)(clientOptions, onConnect);</span><br><span class="line"></span><br><span class="line">  clientToDst.on(<span class="string">'data'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">clientData</span>) </span>&#123;</span><br><span class="line">    ...对目标服务器的响应加密，再返回本地服务</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 处理本地服务发起的请求，根据不同阶段分别处理</span></span><br><span class="line"><span class="comment"> *  0：未连接目标服务器</span></span><br><span class="line"><span class="comment"> *  1：已连接目标服务器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleConnection</span>(<span class="params">config, connection</span>) </span>&#123;</span><br><span class="line">  connection.on(<span class="string">'data'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">chunck</span>) </span>&#123;</span><br><span class="line">    ...解密本地服务的数据</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (stage) &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">0</span>: ...调用上一个方法链接目标服务器</span><br><span class="line">      <span class="keyword">case</span> <span class="number">1</span>: ...将本地服务的请求数据发送给目标服务器</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 启动远程服务</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createServer</span>(<span class="params">config</span>) </span>&#123;</span><br><span class="line">  ...启动远程服务，添加事件监听</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/2018/06/09/ES6异步方式全面解析/" title= ES6异步方式全面解析 >
+                    <span>Previous Post</span>
+                    <span>ES6异步方式全面解析</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        
+        var disqus_config = function () {
+        this.page.url = "https://blog.markeyme.cn/2019/02/28/shadowsocks翻墙原理探究/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "Shadowsocks翻墙原理探究"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        
+        (function () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://markey.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    
+    <!--PC版-->
+
+    <!--PC版-->
+
+
+    
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:markeyyuan@gmail.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/YYCoder" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+        
+    
+        
+            
+                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title="rss"></a>
+            
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">Theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">VISITOR VOLUME: <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    
+    <!-- 备案信息 -->
+    <div class="record">
+        <a href="http://www.miitbeian.gov.cn/">京ICP备18014678号-1</a>
+    </div>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+        
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Shadowsocks翻墙原理探究"><span class="toc-number">1.</span> <span class="toc-text">Shadowsocks翻墙原理探究</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#GFW"><span class="toc-number">1.1.</span> <span class="toc-text">GFW</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Socks5协议"><span class="toc-number">1.2.</span> <span class="toc-text">Socks5协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Socks5工作原理"><span class="toc-number">1.2.1.</span> <span class="toc-text">Socks5工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于TCP的Socks5"><span class="toc-number">1.2.2.</span> <span class="toc-text">基于TCP的Socks5</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shadowsocks工作原理"><span class="toc-number">1.3.</span> <span class="toc-text">Shadowsocks工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部分源码分析"><span class="toc-number">1.4.</span> <span class="toc-text">部分源码分析</span></a></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top">&#xe639;</div>
+    <div class="sidebar">
+    <div class="sidebar-header sidebar-header-show-archive">
+        <div class="sidebar-category">
+            <span class="sidebar-archive-link"><span class="iconfont-archer">&#xe67d;</span>Archive</span>
+            <span class="sidebar-tags-link"><span class="iconfont-archer">&#xe610;</span>Tag</span>
+        </div>
+    </div>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-archive">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 8 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/28</span><a class="archive-post-title" href= "/2019/02/28/shadowsocks翻墙原理探究/" >Shadowsocks翻墙原理探究</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/09</span><a class="archive-post-title" href= "/2018/06/09/ES6异步方式全面解析/" >ES6异步方式全面解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/25</span><a class="archive-post-title" href= "/2018/03/25/工程师的职场认知/" >工程师的一些职场认知</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/20</span><a class="archive-post-title" href= "/2018/03/20/Jimp node-qrcode生成图片并上传总结/" >Jimp node-qrcode生成图片并上传总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/03</span><a class="archive-post-title" href= "/2018/03/03/观《盲山》有感/" >观《盲山》有感</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/08</span><a class="archive-post-title" href= "/2018/02/08/好好写代码归档/" >好好写代码</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/16</span><a class="archive-post-title" href= "/2018/01/16/markey/" >markey</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/15</span><a class="archive-post-title" href= "/2018/01/15/git总结/" >git总结</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name"><a href= "#">life</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">profession</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">movies</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">coding</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">node</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">git</a></span>
+    
+    </div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: false
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tag-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var jsInfo = {
+        root: '/'
+    }
+</script>
+    <!-- 不蒜子  -->
+    
+    <script async defer src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ统计  -->
+    
+    </div>
+    </body>
+</html>
+
+
