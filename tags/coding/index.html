@@ -114,6 +114,39 @@
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2019/10/23/Node进程、线程及单机集群实现/" >
+                
+                    <span>Node单机集群实现</span>
+            </a>
+            <a class="content-show-full" href = "/2019/10/23/Node进程、线程及单机集群实现/" >
+                <div class="abstract-content">
+                    Node单机集群实现文章开头，先给大家抛出一个问题。
+用过 Node 的人都知道，Node 采用的是类似 Nginx 单进程、异步IO 的运行模型，这也是 Node 性能强劲的根源。我们可能也经常听人说 js 的执行是单进程、单线程的，那么，如果换个说法，若说 Node 是单进程、单线程 的，是对的吗？
+下面我们来验证一下。
+我们来执行一个最简单的 Node 程序。它只做一件事，就是不停接受标准输入流并丢弃，这样保证进程一直存在
+1process.stdin.resume();
+启动后，我们使用 ps -ef | grep node 命令找到该进程的 pid，并使用 top 命令查看该进...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = coding>coding</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2019/10/23</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2019/02/28/shadowsocks翻墙原理探究/" >
                 
                     <span>Shadowsocks翻墙原理探究</span>
@@ -448,7 +481,24 @@ GFW全称是 Great Firewall of China，国内一般称作“防火墙”或俗�
     
     
     
-    <div class="total-archive"> Total : 8 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 9 </div>
     
     <div class="post-archive">
     
@@ -457,6 +507,11 @@ GFW全称是 Great Firewall of China，国内一般称作“防火墙”或俗�
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/23</span><a class="archive-post-title" href= "/2019/10/23/Node进程、线程及单机集群实现/" >Node单机集群实现</a>
+        </li>
     
     
         <li class="archive-post-item">

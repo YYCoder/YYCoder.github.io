@@ -114,21 +114,18 @@
     
     
         <article class="index-post">
-            <a class="abstract-title" href = "/2018/01/16/markey/" >
+            <a class="abstract-title" href = "/2019/10/23/Node进程、线程及单机集群实现/" >
                 
-                    <span>markey</span>
+                    <span>Node单机集群实现</span>
             </a>
-            <a class="content-show-full" href = "/2018/01/16/markey/" >
+            <a class="content-show-full" href = "/2019/10/23/Node进程、线程及单机集群实现/" >
                 <div class="abstract-content">
-                    小站终于搭好啦为了纪念这意义重大的时刻，一定要写篇文章庆祝下，主题不是别的，就是我。
-歪某某— 一个努力的前端程序猿兼鼓手称谓：
-
-大头（因为姓氏的缘故，这个昵称是被用的最久的，贯穿我的整个童年、少年时代…）
-歪**（高中时开始用，主要在网上用，没什么含义，好玩而已）
-markey（码名：即作为开发者的昵称）
-
-2017年6月25日毕业于东北林业大学，信息管理与信息系统专业（一半计算机一半管理）。大学期间没参与任何校组织（因为觉得官僚），倒是把一大半精力放在了社团上，一个是异族摇滚社，一个是606软件工作室。可以说这两个社团的经历决定了我现在的路。
-学生时代喜欢安静，不太参与社交，造成了...
+                    Node单机集群实现文章开头，先给大家抛出一个问题。
+用过 Node 的人都知道，Node 采用的是类似 Nginx 单进程、异步IO 的运行模型，这也是 Node 性能强劲的根源。我们可能也经常听人说 js 的执行是单进程、单线程的，那么，如果换个说法，若说 Node 是单进程、单线程 的，是对的吗？
+下面我们来验证一下。
+我们来执行一个最简单的 Node 程序。它只做一件事，就是不停接受标准输入流并丢弃，这样保证进程一直存在
+1process.stdin.resume();
+启动后，我们使用 ps -ef | grep node 命令找到该进程的 pid，并使用 top 命令查看该进...
                 </div>
             </a>
             <div class="abstract-post-meta">
@@ -136,13 +133,13 @@ markey（码名：即作为开发者的昵称）
                 
                 <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-href = life>life</a>
+        <a class="post-tag" href="javascript:void(0);" data-href = coding>coding</a>
     
 </div>
                 
                 <!-- date  -->
                 <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/01/16</span>
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2019/10/23</span>
                 </div>
             </div>
         </article>
